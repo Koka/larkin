@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  mount_ember_app :frontend, to: "/"
+  get '/', to: redirect('/app')
+  get 'users/me', to: 'current_user#index'
+  post 'knock/auth_token', to: 'user_token#create'
+  mount_ember_app :frontend, to: "/app"
 end

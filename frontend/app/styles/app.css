@@ -1,0 +1,22 @@
+.ember-view {
+  height : 100%;
+}
+
+.login {
+  height : 100%;
+  background-color: #EAEAEA;
+}
+
+.login .ui.grid {
+  height : 100%;
+  margin: 0;
+}
+
+.login .column {
+  max-width: 450px;
+}
+
+.login .demo-users {
+  text-align: left;
+  display: inline-block;
+}

@@ -1,0 +1,43 @@
+<div class="login">
+  <div class="ui middle aligned center aligned grid">
+    <div class="column">
+      <h2 class="ui teal image header">
+        <div class="content">
+          Log-in to your account
+        </div>
+      </h2>
+      <form class="ui large form" {{action 'login' on='submit'}}>
+        <div class="ui segment">
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              {{input type="text" name="login" placeholder="Login" value=login}}
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              {{input type="password" name="password" placeholder="Password" value=password}}
+            </div>
+          </div>
+          <button type="submit" class="ui fluid large teal submit button">Login</button>
+        </div>
+
+        {{#if errorMessage}}
+            <div class="ui negative message">{{errorMessage}}</div>
+        {{/if}}
+      </form>
+
+      <div class="ui segment">
+        <div class="demo-users">
+          <h4>Demo users:</h4>
+          <div class="ui list">
+            <div class="item">dispatcher / dispatcher</div>
+            <div class="item">driver1 / driver1</div>
+            <div class="item">driver2 / driver2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

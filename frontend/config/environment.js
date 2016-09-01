@@ -4,7 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'frontend',
     environment: environment,
-    baseURL: '/',
+    baseURL: '/app',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -20,6 +20,11 @@ module.exports = function(environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     }
+  };
+
+  ENV['ember-simple-auth'] = {
+      authorizer: 'authorizer:custom',
+      routeAfterAuthentication: '/'
   };
 
   if (environment === 'development') {

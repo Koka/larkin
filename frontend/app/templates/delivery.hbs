@@ -1,0 +1,17 @@
+<div class="ui container">
+  <nav class="ui stackable menu">
+    <div class="header item">
+      Larkin LLC Delivery
+    </div>
+    <div class="right menu">
+      <div class="item">
+        <i class="user icon"></i>
+        {{currentUser.user.name}}
+      </div>
+      <div class="item">
+        <a href="#" {{action 'logout'}}>Logout</a>
+      </div>
+    </div>
+  </nav>
+  {{outlet}}
+</div>
