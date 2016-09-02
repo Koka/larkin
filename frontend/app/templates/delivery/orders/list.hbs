@@ -3,11 +3,13 @@
   <a class="force-pointer" {{action 'calendarBack'}}>&lt;</a>
   {{moment-format currentDate 'MM/DD/YYYY'}}
   <a class="force-pointer" {{action 'calendarForward'}}>&gt;</a>
+
+  <button class="ui mini right floated labeled icon button" {{action 'openUploadDialog'}}>
+      <i class="upload icon"></i>Upload orders CSV
+  </button>
 </h3>
 
-<button class="ui small labeled icon button">
-    <i class="upload icon"></i>Upload orders CSV
-</button>
+
 
 <table class="ui very basic compact celled table">
   <thead>
@@ -21,3 +23,31 @@
   <tbody>
   </tbody>
 </table>
+
+{{#ui-modal name="upload" class="upload" onApprove=(action 'doUpload')}}
+  <i class="close icon"></i>
+  <div class="header">
+    Upload new orders
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="shop icon"></i>
+    </div>
+    <div class="description">
+      <p>Please, select your orders CSV file using control below:</p>
+      <form>
+        <input type="file" name="orders"/>
+      </form>
+    </div>
+  </div>
+  <div class="actions">
+      <div class="ui positive button">
+        <i class="upload icon"></i>
+        Upload
+      </div>
+      <div class="ui deny button">
+        <i class="cancel icon"></i>
+        Cancel
+      </div>
+  </div>
+{{/ui-modal}}
