@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160902073953) do
+ActiveRecord::Schema.define(version: 20160902103155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,8 +24,7 @@ ActiveRecord::Schema.define(version: 20160902073953) do
     t.string   "origin_state"
     t.string   "origin_zip"
     t.string   "origin_country"
-    t.string   "client"
-    t.string   "name"
+    t.string   "client_name"
     t.string   "destination_raw_line_1"
     t.string   "destination_city"
     t.string   "destination_state"

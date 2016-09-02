@@ -13,18 +13,30 @@
 
 <table class="ui very basic compact celled table">
   <thead>
-    <th>Delivery date</th>
-    <th>Type</th>
-    <th>Client name</th>
-    <th>
-      Phone number
-    </th>
+    <tr>
+      <th>Purchase order</th>
+      <th>Delivery date</th>
+      <th>Delivery shift</th>
+      <th>Type</th>
+      <th>Client name</th>
+      <th>Phone number</th>
+    </tr>
   </thead>
   <tbody>
+    {{#each model as |order|}}
+      <tr>
+        <td>{{order.purchaseOrderNumber}}</td>
+        <td>{{order.deliveryDate}}</td>
+        <td>{{order.deliveryShift}}</td>
+        <td>{{order.type}}</td>
+        <td>{{order.clientName}}</td>
+        <td>{{order.phoneNumber}}</td>
+      </tr>
+    {{/each}}
   </tbody>
 </table>
 
-{{#ui-modal name="upload" class="upload" onApprove=(action 'doUpload')}}
+{{#ui-modal name="upload" class="upload" onApprove=(action 'doUpload') onDeny=(action 'cancelUpload')}}
   <i class="close icon"></i>
   <div class="header">
     Upload new orders
@@ -36,7 +48,7 @@
     <div class="description">
       <p>Please, select your orders CSV file using control below:</p>
       <form>
-        <input type="file" name="orders"/>
+        {{file-upload files=orderFiles}}
       </form>
     </div>
   </div>
