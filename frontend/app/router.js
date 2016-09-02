@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('delivery', function() {
     this.route('orders', function() {
       this.route('list');
+      this.route('outdated');
     });
     this.route('loads');
     this.route('routelists');

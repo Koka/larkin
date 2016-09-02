@@ -1,22 +1,21 @@
 <h3 class="noselect">
   Order list for
-  <a class="force-pointer" {{action 'calendarBack'}}>&lt;</a>
   {{moment-format currentDate 'MM/DD/YYYY'}}
-  <a class="force-pointer" {{action 'calendarForward'}}>&gt;</a>
+
+  <button class="ui mini right floated labeled icon negative button" {{action 'showOutdatedOrders'}}>
+      <i class="alarm icon"></i>Show outdated orders
+  </button>
 
   <button class="ui mini right floated labeled icon button" {{action 'openUploadDialog'}}>
       <i class="upload icon"></i>Upload orders CSV
   </button>
 </h3>
 
-
-
-<table class="ui very basic compact celled table">
+<table class="ui very basic {{if model.length 'selectable'}} compact celled table">
   <thead>
     <tr>
-      <th>Purchase order</th>
-      <th>Delivery date</th>
       <th>Delivery shift</th>
+      <th>Purchase order</th>
       <th>Type</th>
       <th>Client name</th>
       <th>Phone number</th>
@@ -25,13 +24,14 @@
   <tbody>
     {{#each model as |order|}}
       <tr>
-        <td>{{order.purchaseOrderNumber}}</td>
-        <td>{{order.deliveryDate}}</td>
         <td>{{order.deliveryShift}}</td>
+        <td>{{order.purchaseOrderNumber}}</td>
         <td>{{order.type}}</td>
         <td>{{order.clientName}}</td>
         <td>{{order.phoneNumber}}</td>
       </tr>
+    {{else}}
+      <tr><td colspan="5" class="empty-table-message">Sorry, no orders for tomorrow!</td></tr>
     {{/each}}
   </tbody>
 </table>

@@ -33,3 +33,7 @@ body > .ember-view {
   -ms-user-select: none;
   user-select: none;
 }
+
+.ui.table td.empty-table-message {
+  text-align: center;
+}

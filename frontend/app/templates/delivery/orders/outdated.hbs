@@ -1,0 +1,33 @@
+<h3 class="noselect">
+  Outdated order list
+  <button class="ui mini right floated labeled icon positive button" {{action 'showNormalOrders'}}>
+      <i class="alarm mute icon"></i>Back to normal orders
+  </button>
+</h3>
+
+<table class="ui very basic {{if model.length 'selectable'}} compact celled table">
+  <thead>
+    <tr>
+      <th>Delivery date</th>
+      <th>Delivery shift</th>
+      <th>Purchase order</th>
+      <th>Type</th>
+      <th>Client name</th>
+      <th>Phone number</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model as |order|}}
+      <tr>
+        <td>{{order.deliveryDate}}</td>
+        <td>{{order.deliveryShift}}</td>
+        <td>{{order.purchaseOrderNumber}}</td>
+        <td>{{order.type}}</td>
+        <td>{{order.clientName}}</td>
+        <td>{{order.phoneNumber}}</td>
+      </tr>
+    {{else}}
+      <tr><td colspan=6 class="empty-table-message">Good job! No outdated orders!</td></tr>
+    {{/each}}
+  </tbody>
+</table>

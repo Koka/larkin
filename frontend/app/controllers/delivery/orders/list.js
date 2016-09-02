@@ -5,16 +5,11 @@ export default Ember.Controller.extend({
   currentDate : null,
   session: Ember.inject.service(),
 
-  actions : {
-    calendarBack() {
-      this.get('currentDate').subtract(1, 'days');
-      this.notifyPropertyChange('currentDate');
-    },
+  _reloadCampaigns() {
+      this.store.query('Order', { oudated: false }).then(list => { this.set("model", list); });
+  },
 
-    calendarForward() {
-      this.get('currentDate').add(1, 'days');
-      this.notifyPropertyChange('currentDate');
-    },
+  actions : {
 
     openUploadDialog() {
       Ember.$('.ui.upload.modal').modal('show');
@@ -32,8 +27,8 @@ export default Ember.Controller.extend({
               }
             }
           });
-          uploader.upload(files[0]).then(data => {
-            //TODO: Handle success
+          uploader.upload(files[0]).then(() => {
+            this._reloadCampaigns();
           }, error => {
             //TODO: Handle failure
           });
@@ -43,6 +38,10 @@ export default Ember.Controller.extend({
 
     cancelUpload() {
       this.set('orderFiles', null);
+    },
+
+    showOutdatedOrders() {
+      this.transitionToRoute('delivery.orders.outdated')
     }
   }
 });

@@ -4,7 +4,10 @@ class OrdersController < ApplicationController
   before_action :authenticate_user
 
   def index
-    render json: Order.all
+    query = Order.order(:delivery_date, "case delivery_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end", :client_name)
+    tomorrow = Date.today.strftime("%m/%d/%Y")
+    render json: query.where(delivery_date: tomorrow) unless (params[:outdated] == 'true')
+    render json: query.where("delivery_date is null OR delivery_date = ? OR NOT delivery_date SIMILAR TO '(0[1-9]|1[0-2])/(0[1-9]|1[0-9]|2[0-9]|3[01])/(19|20)[0-9]{2}' OR to_date(delivery_date, 'MM/DD/YYYY') < to_date(?, 'MM/DD/YYYY')", tomorrow, tomorrow) if (params[:outdated] == 'true')
   end
 
   def show
