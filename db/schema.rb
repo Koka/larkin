@@ -10,10 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160901093733) do
+ActiveRecord::Schema.define(version: 20160902073953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "orders", force: :cascade do |t|
+    t.string   "delivery_date"
+    t.string   "delivery_shift"
+    t.string   "origin_name"
+    t.string   "origin_raw_line_1"
+    t.string   "origin_city"
+    t.string   "origin_state"
+    t.string   "origin_zip"
+    t.string   "origin_country"
+    t.string   "client"
+    t.string   "name"
+    t.string   "destination_raw_line_1"
+    t.string   "destination_city"
+    t.string   "destination_state"
+    t.string   "destination_zip"
+    t.string   "destination_country"
+    t.string   "phone_number"
+    t.string   "mode"
+    t.string   "purchase_order_number"
+    t.string   "volume"
+    t.string   "handling_unit_quantity"
+    t.string   "handling_unit_type"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name",            null: false
