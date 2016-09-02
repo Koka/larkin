@@ -5,18 +5,30 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
   session: Ember.inject.service(),
   currentUser: Ember.inject.service(),
 
+  beforeModel() {
+    return this._loadCurrentUser();
+  },
+
   sessionAuthenticated() {
     this._super(...arguments);
-    this._loadCurrentUser().catch(() => this.get('session').invalidate());
+    this._loadCurrentUser();
   },
 
   _loadCurrentUser() {
-    return this.get('currentUser').load();
+    let session = this.get('session');
+    if (session.get('isAuthenticated')) {
+      return this.get('currentUser').load().catch(() => { session.invalidate(); });
+    } else {
+      return Ember.RSVP.Promise.resolve();
+    }
   },
 
   actions: {
     logout: function() {
-        this.get('session').invalidate();
+      let session = this.get('session');
+      if (session.get('isAuthenticated')) {
+        session.invalidate();
+      }
     }
   }
 });
