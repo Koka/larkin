@@ -18,7 +18,7 @@
   </thead>
   <tbody>
     {{#each model as |order|}}
-      <tr>
+      <tr class="{{if (eq order.type 'Return') 'warning'}}">
         <td>{{order.deliveryDate}}</td>
         <td>{{order.deliveryShift}}</td>
         <td>{{order.purchaseOrderNumber}}</td>

@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -20,5 +21,15 @@ export default DS.Model.extend({
   purchaseOrderNumber: DS.attr(),
   volume: DS.attr(),
   handlingUnitQuantity: DS.attr(),
-  handlingUnitType: DS.attr()
+  handlingUnitType: DS.attr(),
+
+  type: Ember.computed('clientName', 'originName', function () {
+    if (this.get('originName') === 'Larkin LLC' && this.get('clientName') !== 'Larkin LLC') {
+      return 'Delivery';
+    } else if (this.get('originName') !== 'Larkin LLC' && this.get('clientName') === 'Larkin LLC') {
+      return 'Return';
+    } else {
+      return 'Unknown!';
+    }
+  })
 });

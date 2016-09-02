@@ -23,7 +23,7 @@
   </thead>
   <tbody>
     {{#each model as |order|}}
-      <tr>
+      <tr class="{{if (eq order.type 'Return') 'warning'}}">
         <td>{{order.deliveryShift}}</td>
         <td>{{order.purchaseOrderNumber}}</td>
         <td>{{order.type}}</td>
