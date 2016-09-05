@@ -37,3 +37,7 @@ body > .ember-view {
 .ui.table td.empty-table-message {
   text-align: center;
 }
+
+.ui.modal > .content > div.description.full-width {
+  width: 100%;
+}

@@ -41,20 +41,49 @@ Load planning for
     <div class="image">
       <i class="cubes icon"></i>
     </div>
-    <div class="description">
+    <div class="description full-width">
       <p>Please, select orders to be scheduled below:</p>
-      <ul>
-        {{#each availableOrders as |order|}}
-          <li>
-            Order {{order.purchaseOrderNumber}} [
-            {{format-number order.handlingUnitQuantity format="0.00"}}
-            {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
-            ]
-          </li>
-        {{else}}
-          <li>No orders available for loading!</li>
-        {{/each}}
-      </ul>
+      <table class="ui very basic compact {{if model.length 'selectable'}} celled table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Purchase order</th>
+            <th>Type</th>
+            <th>Client name</th>
+            <th>Phone number</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each availableOrders as |order|}}
+            <tr class="{{if (eq order.type 'Return') 'warning'}}">
+              <td>{{input type="checkbox" checked=order.selected}}</td>
+              <td>{{order.purchaseOrderNumber}}</td>
+              <td>{{order.type}}</td>
+              <td>{{order.clientName}}</td>
+              <td>{{order.phoneNumber}}</td>
+              <td>
+                {{format-number order.handlingUnitQuantity format="0.00"}}
+                {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
+              </td>
+            </tr>
+          {{else}}
+            <tr><td colspan="6" class="empty-table-message">No orders available for loading!</td></tr>
+          {{/each}}
+        </tbody>
+        {{#if (gt availableOrders.length 0)}}
+          <tfoot>
+            <tr>
+              <td colspan="6">
+                <h3>
+                  Load volume: {{format-number scheduleSumVolume format="0.00"}} / {{scheduleTruck.maxVolume}} ft<sup>3</sup>
+                  (+ return volume: {{format-number scheduleSumReturnVolume format="0.00"}} / {{scheduleTruck.maxVolume}} ft<sup>3</sup>)
+                </h3>
+              </td>
+            </tr>
+          </tfoot>
+        {{/if}}
+      </table>
     </div>
   </div>
   <div class="actions">

@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
 
       this.store.query('Order', { outdated: false }).then(orders => {
         this.get('availableOrders').clear();
-        this.get('availableOrders').addObjects(orders);
+        this.get('availableOrders').addObjects(orders.filter( order => (order.get('deliveryShift') == null || order.get('deliveryShift') === shift)));
       });
 
       Ember.$('.ui.schedule.modal').modal('show');
