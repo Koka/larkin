@@ -5,13 +5,15 @@ class OrdersController < ApplicationController
 
   def index
     pending = params[:pending]
+    tomorrow = Date.tomorrow
     if pending then
-      render json: Order.where.not(load_truck_id: nil)
+      query = Order.where.not(load_truck_id: nil)
+      query = query.where("to_date(delivery_date, 'MM/DD/YYYY') = ?", tomorrow)
+      render json: query
     else
       query = Order.order(:delivery_date, "case delivery_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end", :client_name)
       query = query.where(load_truck_id: nil)
-      tomorrow = Date.today.strftime("%m/%d/%Y")
-      render json: query.where(delivery_date: tomorrow) unless (params[:outdated] == 'true')
+      render json: query.where("to_date(delivery_date, 'MM/DD/YYYY') = ?", tomorrow) unless (params[:outdated] == 'true')
       render json: query.where("delivery_date is null OR delivery_date = ? OR NOT delivery_date SIMILAR TO '(0[1-9]|1[0-2])/(0[1-9]|1[0-9]|2[0-9]|3[01])/(19|20)[0-9]{2}' OR to_date(delivery_date, 'MM/DD/YYYY') < to_date(?, 'MM/DD/YYYY')", tomorrow, tomorrow) if (params[:outdated] == 'true')
     end
   end

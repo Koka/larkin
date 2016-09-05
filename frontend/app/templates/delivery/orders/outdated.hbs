@@ -1,9 +1,22 @@
 <h3 class="noselect">
-  Outdated order list
+  Outdated and invalid order list
   <button class="ui mini right floated labeled icon positive button" {{action 'showNormalOrders'}}>
       <i class="alarm mute icon"></i>Back to normal orders
   </button>
 </h3>
+
+<div class="ui message">
+  <div class="header">
+    Outdated and invalid orders
+  </div>
+  <p>
+    You can fix the orders listed below and make them eligible for further processing by
+    pressing 'Reschedule for tomorrow' button on each order row that you want to reschedule.
+  </p>
+  <p>
+    If the order data is invalid (highlited in red), press the edit button to fix order data.
+  </p>
+</div>
 
 <table class="ui very basic {{if model.length 'selectable'}} compact celled table">
   <thead>
@@ -19,7 +32,13 @@
   <tbody>
     {{#each model as |order|}}
       <tr class="{{if (eq order.type 'Return') 'warning'}}">
-        <td>{{order.deliveryDate}}</td>
+        <td>
+          <button class="ui icon button" {{action 'rescheduleOrder' order}} title="Reschedule for tomorrow">
+              <i class="add to calendar icon"></i>
+          </button>
+
+          {{order.deliveryDate}}
+        </td>
         <td>{{order.deliveryShift}}</td>
         <td>{{order.purchaseOrderNumber}}</td>
         <td>{{order.type}}</td>

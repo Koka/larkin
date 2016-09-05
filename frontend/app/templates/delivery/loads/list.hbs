@@ -18,16 +18,53 @@ Load planning for
     <div class="row">
       <div class="five wide column">
         <span class="ui green ribbon label">{{truck.name}}</span>
-        {{load-plan truck=truck shift="M" date=currentDate orders=pendingOrders onAdd=(action "scheduleOrder") onRemove=(action "unscheduleOrder")}}
+        {{load-plan truck=truck shift="M" date=currentDate orders=pendingOrders onAdd=(action "openScheduleDialog") onRemove=(action "unscheduleOrder")}}
       </div>
       <div class="six wide column">
         <span>&nbsp;</span>
-        {{load-plan truck=truck shift="N" date=currentDate orders=pendingOrders onAdd=(action "scheduleOrder") onRemove=(action "unscheduleOrder")}}
+        {{load-plan truck=truck shift="N" date=currentDate orders=pendingOrders onAdd=(action "openScheduleDialog") onRemove=(action "unscheduleOrder")}}
       </div>
       <div class="five wide column">
         <span>&nbsp;</span>
-        {{load-plan truck=truck shift="E" date=currentDate orders=pendingOrders onAdd=(action "scheduleOrder") onRemove=(action "unscheduleOrder")}}
+        {{load-plan truck=truck shift="E" date=currentDate orders=pendingOrders onAdd=(action "openScheduleDialog") onRemove=(action "unscheduleOrder")}}
       </div>
     </div>
   {{/each}}
 </div>
+
+{{#ui-modal name="schedule" class="fullscreen schedule" onApprove=(action 'doSchedule') onDeny=(action 'cancelSchedule')}}
+  <i class="close icon"></i>
+  <div class="header">
+    Schedule orders for load on {{moment-format scheduleDate 'MM/DD/YYYY'}} (shift: {{scheduleShift}}, truck: {{scheduleTruck.name}})
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="cubes icon"></i>
+    </div>
+    <div class="description">
+      <p>Please, select orders to be scheduled below:</p>
+      <ul>
+        {{#each availableOrders as |order|}}
+          <li>
+            Order {{order.purchaseOrderNumber}} [
+            {{format-number order.handlingUnitQuantity format="0.00"}}
+            {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
+            ]
+          </li>
+        {{else}}
+          <li>No orders available for loading!</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+  <div class="actions">
+      <div class="ui positive button {{if (eq scheduleOrders.length 0) 'disabled'}}">
+        <i class="shipping icon"></i>
+        Schedule orders
+      </div>
+      <div class="ui deny button">
+        <i class="cancel icon"></i>
+        Cancel
+      </div>
+  </div>
+{{/ui-modal}}

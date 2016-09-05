@@ -4,6 +4,7 @@ import EmberUploader from 'ember-uploader';
 export default Ember.Controller.extend({
   currentDate : null,
   session: Ember.inject.service(),
+  orderFiles: [],
 
   _reloadCampaigns() {
       this.store.query('Order', { oudated: false }).then(list => { this.set("model", list); });
@@ -37,7 +38,7 @@ export default Ember.Controller.extend({
     },
 
     cancelUpload() {
-      this.set('orderFiles', null);
+      this.set('orderFiles', []);
     },
 
     showOutdatedOrders() {

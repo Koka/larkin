@@ -53,7 +53,7 @@
     </div>
   </div>
   <div class="actions">
-      <div class="ui positive button">
+      <div class="ui positive {{if (eq orderFiles.length 0) 'disabled'}} button">
         <i class="upload icon"></i>
         Upload
       </div>

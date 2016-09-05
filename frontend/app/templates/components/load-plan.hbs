@@ -5,9 +5,10 @@
 <ul>
   {{#each scheduledOrders as |order|}}
     <li>
-      #{{order.purchaseOrderNumber}}:
+      Order {{order.purchaseOrderNumber}} [
       {{format-number order.handlingUnitQuantity format="0.00"}}
       {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
+      ]
       <i class="red remove icon force-pointer" {{action 'remove' order}}></i>
     </li>
   {{else}}
