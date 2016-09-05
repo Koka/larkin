@@ -19,19 +19,25 @@
       <th>Type</th>
       <th>Client name</th>
       <th>Phone number</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     {{#each model as |order|}}
-      <tr class="{{if (eq order.type 'Return') 'warning'}}">
+      <tr class="{{if (eq order.type 'Return') 'warning'}} {{unless order.isValid 'error'}}">
         <td>{{order.deliveryShift}}</td>
         <td>{{order.purchaseOrderNumber}}</td>
         <td>{{order.type}}</td>
         <td>{{order.clientName}}</td>
         <td>{{order.phoneNumber}}</td>
+        <td>
+          <button class="ui icon button" {{action 'editOrder' order}} title="Edit order">
+              <i class="edit icon"></i>
+          </button>
+        </td>
       </tr>
     {{else}}
-      <tr><td colspan="5" class="empty-table-message">Sorry, no orders for tomorrow!</td></tr>
+      <tr><td colspan="6" class="empty-table-message">Sorry, no orders for tomorrow!</td></tr>
     {{/each}}
   </tbody>
 </table>

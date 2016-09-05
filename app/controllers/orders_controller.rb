@@ -14,7 +14,7 @@ class OrdersController < ApplicationController
       query = Order.order(:delivery_date, "case delivery_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end", :client_name)
       query = query.where(load_truck_id: nil)
       render json: query.where("to_date(delivery_date, 'MM/DD/YYYY') = ?", tomorrow) unless (params[:outdated] == 'true')
-      render json: query.where("delivery_date is null OR delivery_date = ? OR NOT delivery_date SIMILAR TO '(0[1-9]|1[0-2])/(0[1-9]|1[0-9]|2[0-9]|3[01])/(19|20)[0-9]{2}' OR to_date(delivery_date, 'MM/DD/YYYY') < to_date(?, 'MM/DD/YYYY')", tomorrow, tomorrow) if (params[:outdated] == 'true')
+      render json: query.where("delivery_date is null OR NOT delivery_date SIMILAR TO '(0?[1-9]|1[0-2])/(0?[1-9]|1[0-9]|2[0-9]|3[01])/(19|20)[0-9]{2}' OR to_date(delivery_date, 'MM/DD/YYYY') < :date", date: tomorrow) if (params[:outdated] == 'true')
     end
   end
 
@@ -37,13 +37,13 @@ class OrdersController < ApplicationController
         order.delivery_date = row[col]
         order.delivery_shift = row[col += 1]
         order.origin_name = row[col += 1]
-        order.origin_raw_line_1 = row[col += 1]
+        order.origin_address = row[col += 1]
         order.origin_city = row[col += 1]
         order.origin_state = row[col += 1]
         order.origin_zip = row[col += 1]
         order.origin_country = row[col += 1]
         order.client_name = row[col += 1]
-        order.destination_raw_line_1 = row[col += 1]
+        order.destination_address = row[col += 1]
         order.destination_city = row[col += 1]
         order.destination_state = row[col += 1]
         order.destination_zip = row[col += 1]

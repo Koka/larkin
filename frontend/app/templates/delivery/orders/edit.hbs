@@ -1,0 +1,88 @@
+
+<h2 class="ui header">Edit order {{model.purchaseOrderNumber}}</h2>
+
+<div class="ui raised segment">
+    <form class="ui form">
+        <div class="field">
+            <label>Delivery date</label>
+            {{input type="text" value=model.deliveryDate placeholder='Delivery date'}}
+        </div>
+        <div class="field">
+            <label>Delivery shift</label>
+            {{input type="text" value=model.deliveryShift placeholder='Delivery shift'}}
+        </div>
+        <div class="field">
+            <label>Origin name</label>
+            {{input type="text" value=model.originName placeholder='Origin name'}}
+        </div>
+        <div class="field">
+            <label>Origin address</label>
+            {{input type="text" value=model.originAddress placeholder='Origin address'}}
+        </div>
+        <div class="field">
+            <label>Origin city</label>
+            {{input type="text" value=model.originCity placeholder='Origin city'}}
+        </div>
+        <div class="field">
+            <label>Origin state</label>
+            {{input type="text" value=model.originState placeholder='Origin state'}}
+        </div>
+        <div class="field">
+            <label>Origin ZIP</label>
+            {{input type="text" value=model.originZip placeholder='Origin ZIP'}}
+        </div>
+        <div class="field">
+            <label>Origin country</label>
+            {{input type="text" value=model.originCountry placeholder='Origin country'}}
+        </div>
+        <div class="field">
+            <label>Client name</label>
+            {{input type="text" value=model.clientName placeholder='Client name'}}
+        </div>
+        <div class="field">
+            <label>Destination address</label>
+            {{input type="text" value=model.destinationAddress placeholder='Destination address'}}
+        </div>
+        <div class="field">
+            <label>Destination city</label>
+            {{input type="text" value=model.destinationCity placeholder='Destination city'}}
+        </div>
+        <div class="field">
+            <label>Destination state</label>
+            {{input type="text" value=model.destinationState placeholder='Destination state'}}
+        </div>
+        <div class="field">
+            <label>Destination ZIP</label>
+            {{input type="text" value=model.destinationZip placeholder='Destination ZIP'}}
+        </div>
+        <div class="field">
+            <label>Destination country</label>
+            {{input type="text" value=model.destinationCountry placeholder='Destination country'}}
+        </div>
+
+        <div class="field">
+            <label>Phone number</label>
+            {{input type="text" value=model.phoneNumber placeholder='Phone number'}}
+        </div>
+        <div class="field">
+            <label>Purchase order number</label>
+            {{input type="text" value=model.purchaseOrderNumber placeholder='Purchase order number'}}
+        </div>
+        <div class="field">
+            <label>Volume</label>
+            {{input type="text" value=model.volume placeholder='Volume'}}
+        </div>
+        <div class="field">
+            <label>Handling unit quantity</label>
+            {{input type="text" value=model.handlingUnitQuantity placeholder='Handling unit quantity'}}
+        </div>
+        <div class="field">
+            <label>Handling unit type</label>
+            {{input type="text" value=model.handlingUnitType placeholder='Handling unit type'}}
+        </div>
+    </form>
+</div>
+<div>
+    <button class="ui primary button" {{action "save" model}}>Save</button>
+    <button class="ui button" {{action "cancel" model}}>Cancel</button>
+</div>

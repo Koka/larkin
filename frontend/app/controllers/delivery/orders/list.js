@@ -42,7 +42,11 @@ export default Ember.Controller.extend({
     },
 
     showOutdatedOrders() {
-      this.transitionToRoute('delivery.orders.outdated')
+      this.transitionToRoute('delivery.orders.outdated');
+    },
+
+    editOrder(order) {
+      this.transitionToRoute('delivery.orders.edit', order.get('id'), 'list');
     }
   }
 });

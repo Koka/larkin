@@ -11,6 +11,7 @@ Router.map(function() {
     this.route('orders', function() {
       this.route('list');
       this.route('outdated');
+      this.route('edit', { path: ':id/:back'});
     });
     this.route('loads', function() {
       this.route('list');

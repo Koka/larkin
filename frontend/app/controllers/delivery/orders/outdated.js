@@ -1,12 +1,11 @@
 import Ember from 'ember';
-import EmberUploader from 'ember-uploader';
 
 export default Ember.Controller.extend({
   currentDate : null,
 
   actions : {
     showNormalOrders() {
-      this.transitionToRoute('delivery.orders.list')
+      this.transitionToRoute('delivery.orders.list');
     },
 
     rescheduleOrder(order) {
@@ -14,6 +13,10 @@ export default Ember.Controller.extend({
       order.save().then(() => {
         this.get('model').removeObject(order);
       });
+    },
+
+    editOrder(order) {
+      this.transitionToRoute('delivery.orders.edit', order.get('id'), 'outdated');
     }
   }
 });
