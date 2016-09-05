@@ -1,0 +1,17 @@
+<button class="ui mini primary right floated icon button">
+  <i class="plus icon"></i>
+</button>
+
+<ul>
+  {{#each scheduledOrders as |order|}}
+    <li>#{{order.purchaseOrderNumber}}: {{format-number order.handlingUnitQuantity format="0.00"}} {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup></li>
+  {{else}}
+    <li>No orders scheduled yet</li>
+  {{/each}}
+</ul>
+
+<div class="ui label">
+  <i class="cube icon"></i>Volume: {{format-number sumVolume format="0.00"}} / {{truck.maxVolume}} ft<sup>3</sup>
+</div>
+
+{{yield}}
