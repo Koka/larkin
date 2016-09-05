@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   get 'orders', to: 'orders#index'
   get 'orders/:id', to: 'orders#show'
   post 'orders', to: 'orders#upload'
+
+  get 'trucks', to: 'trucks#index'
+  get 'trucks/:id', to: 'trucks#show'
 end

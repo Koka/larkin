@@ -1,0 +1,75 @@
+<h3 class="noselect">
+Load planning for
+{{moment-format currentDate 'MM/DD/YYYY'}}
+</h3>
+<div class="ui celled stackable grid">
+  <div class="row">
+    <div class="five wide column">
+      <h4>Morning</h4>
+    </div>
+    <div class="six wide column">
+      <h4>Afternoon</h4>
+    </div>
+    <div class="five wide column">
+      <h4>Evening</h4>
+    </div>
+  </div>
+  {{#each model as |truck|}}
+    <div class="row">
+      <div class="five wide column">
+        <span class="ui green ribbon label">{{truck.name}}</span>
+
+        <button class="ui mini primary right floated icon button">
+          <i class="plus icon"></i>
+        </button>
+
+        <ul>
+          <li>Item 1</li>
+          <li>Item 2</li>
+          <li>Item 3</li>
+          <li>Item 4</li>
+        </ul>
+
+        <div class="ui label">
+          <i class="cube icon"></i>Volume: 23 / {{truck.maxVolume}}
+        </div>
+      </div>
+      <div class="six wide column">
+        <span>&nbsp;</span>
+
+        <button class="ui mini primary right floated icon button">
+          <i class="plus icon"></i>
+        </button>
+
+        <ul>
+          <li>Item 1</li>
+          <li>Item 2</li>
+          <li>Item 3</li>
+          <li>Item 4</li>
+        </ul>
+
+        <div class="ui label">
+          <i class="cube icon"></i>Volume: 23 / {{truck.maxVolume}}
+        </div>
+      </div>
+      <div class="five wide column">
+        <span>&nbsp;</span>
+
+        <button class="ui mini primary right floated icon button">
+          <i class="plus icon"></i>
+        </button>
+
+        <ul>
+          <li>Item 1</li>
+          <li>Item 2</li>
+          <li>Item 3</li>
+          <li>Item 4</li>
+        </ul>
+
+        <div class="ui label">
+          <i class="cube icon"></i>Volume: 23 / {{truck.maxVolume}}
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

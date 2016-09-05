@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160902103155) do
+ActiveRecord::Schema.define(version: 20160905054746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,24 @@ ActiveRecord::Schema.define(version: 20160902103155) do
     t.string   "handling_unit_type"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.date     "load_date"
+    t.integer  "load_truck_id"
+    t.string   "load_shift"
+    t.index ["delivery_date"], name: "index_orders_on_delivery_date", using: :btree
+    t.index ["load_date"], name: "index_orders_on_load_date", using: :btree
+    t.index ["load_shift"], name: "index_orders_on_load_shift", using: :btree
+    t.index ["load_truck_id"], name: "index_orders_on_load_truck_id", using: :btree
+  end
+
+  create_table "trucks", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "trips_per_day"
+    t.integer  "max_weight"
+    t.integer  "max_volume"
+    t.integer  "driver_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["driver_id"], name: "index_trucks_on_driver_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -49,4 +67,6 @@ ActiveRecord::Schema.define(version: 20160902103155) do
     t.index ["login"], name: "index_users_on_login", unique: true, using: :btree
   end
 
+  add_foreign_key "orders", "trucks", column: "load_truck_id"
+  add_foreign_key "trucks", "users", column: "driver_id"
 end

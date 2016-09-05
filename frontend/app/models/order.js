@@ -23,6 +23,10 @@ export default DS.Model.extend({
   handlingUnitQuantity: DS.attr(),
   handlingUnitType: DS.attr(),
 
+  loadDate: DS.attr(),
+  loadShift: DS.attr(),
+  loadTruck: DS.belongsTo('truck'),
+
   type: Ember.computed('clientName', 'originName', function () {
     if (this.get('originName') === 'Larkin LLC' && this.get('clientName') !== 'Larkin LLC') {
       return 'Delivery';

@@ -12,7 +12,9 @@ Router.map(function() {
       this.route('list');
       this.route('outdated');
     });
-    this.route('loads');
+    this.route('loads', function() {
+      this.route('list');
+    });
     this.route('routelists');
   });
 });
