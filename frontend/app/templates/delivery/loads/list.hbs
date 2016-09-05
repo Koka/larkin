@@ -18,15 +18,15 @@ Load planning for
     <div class="row">
       <div class="five wide column">
         <span class="ui green ribbon label">{{truck.name}}</span>
-        {{load-plan truck=truck shift="M" date=currentDate orders=pendingOrders}}
+        {{load-plan truck=truck shift="M" date=currentDate orders=pendingOrders onAdd=(action "scheduleOrder") onRemove=(action "unscheduleOrder")}}
       </div>
       <div class="six wide column">
         <span>&nbsp;</span>
-        {{load-plan truck=truck shift="N" date=currentDate orders=pendingOrders}}
+        {{load-plan truck=truck shift="N" date=currentDate orders=pendingOrders onAdd=(action "scheduleOrder") onRemove=(action "unscheduleOrder")}}
       </div>
       <div class="five wide column">
         <span>&nbsp;</span>
-        {{load-plan truck=truck shift="E" date=currentDate orders=pendingOrders}}
+        {{load-plan truck=truck shift="E" date=currentDate orders=pendingOrders onAdd=(action "scheduleOrder") onRemove=(action "unscheduleOrder")}}
       </div>
     </div>
   {{/each}}

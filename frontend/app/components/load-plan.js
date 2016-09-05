@@ -19,5 +19,15 @@ export default Ember.Component.extend({
       return 0;
     }
     return this.get('scheduledOrders').reduce((acc, it) => acc + parseFloat(it.get('volume')), 0);
-  })
+  }),
+
+  actions : {
+    add() {
+      this.get('onAdd')(this.get('date'), this.get('truck'), this.get('shift'));
+    },
+
+    remove(order) {
+      this.get('onRemove')(this.get('date'), this.get('truck'), this.get('shift'), order);
+    }
+  }
 });

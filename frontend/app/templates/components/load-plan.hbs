@@ -1,10 +1,15 @@
-<button class="ui mini primary right floated icon button">
+<button class="ui mini primary right floated icon button" {{action 'add'}}>
   <i class="plus icon"></i>
 </button>
 
 <ul>
   {{#each scheduledOrders as |order|}}
-    <li>#{{order.purchaseOrderNumber}}: {{format-number order.handlingUnitQuantity format="0.00"}} {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup></li>
+    <li>
+      #{{order.purchaseOrderNumber}}:
+      {{format-number order.handlingUnitQuantity format="0.00"}}
+      {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
+      <i class="red remove icon force-pointer" {{action 'remove' order}}></i>
+    </li>
   {{else}}
     <li>No orders scheduled yet</li>
   {{/each}}

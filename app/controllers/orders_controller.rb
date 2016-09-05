@@ -9,6 +9,7 @@ class OrdersController < ApplicationController
       render json: Order.where.not(load_truck_id: nil)
     else
       query = Order.order(:delivery_date, "case delivery_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end", :client_name)
+      query = query.where(load_truck_id: nil)
       tomorrow = Date.today.strftime("%m/%d/%Y")
       render json: query.where(delivery_date: tomorrow) unless (params[:outdated] == 'true')
       render json: query.where("delivery_date is null OR delivery_date = ? OR NOT delivery_date SIMILAR TO '(0[1-9]|1[0-2])/(0[1-9]|1[0-9]|2[0-9]|3[01])/(19|20)[0-9]{2}' OR to_date(delivery_date, 'MM/DD/YYYY') < to_date(?, 'MM/DD/YYYY')", tomorrow, tomorrow) if (params[:outdated] == 'true')
@@ -17,6 +18,11 @@ class OrdersController < ApplicationController
 
   def show
     render json: Order.find_by(id: params[:id])
+  end
+
+  def update
+    order = Order.find(params[:id])
+    order.update_attributes!(params.require(:order).permit!)
   end
 
   def upload
@@ -49,6 +55,7 @@ class OrdersController < ApplicationController
         order.save()
       end
     end
+
   end
 
 end
