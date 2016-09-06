@@ -13,4 +13,7 @@ Rails.application.routes.draw do
 
   get 'trucks', to: 'trucks#index'
   get 'trucks/:id', to: 'trucks#show'
+
+  get 'routelists', to: 'routelists#index'
+  get 'routelists/:id', to: 'routelists#show'
 end

@@ -16,7 +16,9 @@ Router.map(function() {
     this.route('loads', function() {
       this.route('list');
     });
-    this.route('routelists');
+    this.route('routelists', function() {
+      this.route('list');
+    });
   });
 });
 

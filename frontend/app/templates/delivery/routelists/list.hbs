@@ -1,0 +1,34 @@
+<h3 class="noselect">Available route lists</h3>
+<table class="ui very basic {{if model.length 'selectable'}} compact celled table">
+  <thead>
+    <tr>
+      <th>Truck</th>
+      <th>Driver</th>
+      <th>Delivery date</th>
+      <th>Delivery shift</th>
+      <th>Stop count</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model as |routelist|}}
+      <tr>
+        <td>{{routelist.truck}}</td>
+        <td>{{routelist.truck.driver.name}}</td>
+        <td>{{routelist.deliveryDate}}</td>
+        <td>{{routelist.deliveryShift}}</td>
+        <td>{{routelist.stopCount}}</td>
+        <td>
+          <button class="ui icon button" title="Download PDF version">
+              <i class="file pdf outline icon"></i>
+          </button>
+          <button class="ui icon button" title="Edit stop order">
+              <i class="edit icon"></i>
+          </button>
+        </td>
+      </tr>
+    {{else}}
+      <tr><td colspan="6" class="empty-table-message">No route lists are available!</td></tr>
+    {{/each}}
+  </tbody>
+</table>
