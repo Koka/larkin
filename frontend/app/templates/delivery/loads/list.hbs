@@ -88,18 +88,16 @@ Load planning for
             <tr><td colspan="7" class="empty-table-message">No orders available for loading!</td></tr>
           {{/each}}
         </tbody>
-        {{#if (gt availableOrders.length 0)}}
-          <tfoot>
-            <tr>
-              <td colspan="7">
-                <h3>
-                  Remaining volume (+ return): {{format-number scheduleRemainingVolume format="0.00"}}
-                  (+ {{format-number scheduleRemainingReturnVolume format="0.00"}}) ft<sup>3</sup>
-                </h3>
-              </td>
-            </tr>
-          </tfoot>
-        {{/if}}
+        <tfoot>
+          <tr>
+            <td colspan="7">
+              <h3>
+                Remaining volume (+ return): {{format-number scheduleRemainingVolume format="0.00"}}
+                (+ {{format-number scheduleRemainingReturnVolume format="0.00"}}) ft<sup>3</sup>
+              </h3>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
