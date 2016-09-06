@@ -2,10 +2,10 @@
 <table class="ui very basic {{if model.length 'selectable'}} compact celled table">
   <thead>
     <tr>
-      <th>Truck</th>
-      <th>Driver</th>
       <th>Delivery date</th>
       <th>Delivery shift</th>
+      <th>Truck</th>
+      <th>Driver</th>
       <th>Stop count</th>
       <th></th>
     </tr>
@@ -13,16 +13,16 @@
   <tbody>
     {{#each model as |routelist|}}
       <tr>
-        <td>{{routelist.truck}}</td>
-        <td>{{routelist.truck.driver.name}}</td>
         <td>{{routelist.deliveryDate}}</td>
         <td>{{routelist.deliveryShift}}</td>
+        <td>{{routelist.truck.name}}</td>
+        <td>{{routelist.truck.driver.name}}</td>
         <td>{{routelist.stopCount}}</td>
         <td>
-          <button class="ui icon button" title="Download PDF version">
+          <button class="ui icon button" title="Download PDF version" {{action 'downloadPDF' routelist}}>
               <i class="file pdf outline icon"></i>
           </button>
-          <button class="ui icon button" title="Edit stop order">
+          <button class="ui icon button" title="Edit stop order" {{action 'editRoutelist' routelist}}>
               <i class="edit icon"></i>
           </button>
         </td>

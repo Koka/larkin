@@ -1,0 +1,5 @@
+<h2 class="ui header">Route list for {{moment-format model.deliveryDate 'MM/DD/YYYY'}} (shift: {{model.deliveryShift}}, truck: {{model.truck.name}})</h2>
+<div>
+    <button class="ui primary button" {{action "save" model}}>Save</button>
+    <button class="ui button" {{action "cancel" model}}>Cancel</button>
+</div>

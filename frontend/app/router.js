@@ -18,6 +18,7 @@ Router.map(function() {
     });
     this.route('routelists', function() {
       this.route('list');
+      this.route('edit', { path: ':id'});
     });
   });
 });
