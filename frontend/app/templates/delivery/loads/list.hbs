@@ -17,8 +17,8 @@ Load planning for
   {{#each model as |truck|}}
     <div class="row">
       <div class="five wide column">
-        <span class="ui green ribbon label">{{truck.name}}</span>
-        {{load-plan truck=truck shift="M" date=currentDate orders=pendingOrders onAdd=(action "openScheduleDialog") onRemove=(action "unscheduleOrder")}}
+          <span class="ui green ribbon label">{{truck.name}}</span>
+          {{load-plan truck=truck shift="M" date=currentDate orders=pendingOrders onAdd=(action "openScheduleDialog") onRemove=(action "unscheduleOrder")}}
       </div>
       <div class="six wide column">
         <span>&nbsp;</span>
@@ -47,7 +47,7 @@ Load planning for
         <thead>
           <tr>
             <th></th>
-            <th>Delivery shift</th>
+            <th>Shift</th>
             <th>Purchase order</th>
             <th>Type</th>
             <th>Client name</th>
@@ -57,7 +57,7 @@ Load planning for
         </thead>
         <tbody>
           {{#each availableOrders as |order|}}
-            <tr class="{{if (eq order.order.type 'Return') 'warning'}} {{if order.selected 'positive'}}">
+            <tr class="{{if (eq order.order.type 'Return') 'warning'}} {{if order.selected 'positive'}} {{if (or (and (eq order.order.type 'Delivery') (gt order.order.volume scheduleRemainingVolume)) (and (eq order.order.type 'Return') (gt order.order.volume scheduleRemainingReturnVolume))) 'disabled'}}">
               <td>{{input type="checkbox" checked=order.selected}}</td>
               <td>
                 {{#if order.order.deliveryShift}}
@@ -71,11 +71,17 @@ Load planning for
               </td>
               <td>{{order.order.purchaseOrderNumber}}</td>
               <td>{{order.order.type}}</td>
-              <td>{{order.order.clientName}}</td>
+              <td>
+                {{#if (eq order.order.type 'Return')}}
+                  {{order.order.originName}}
+                {{else}}
+                  {{order.order.clientName}}
+                {{/if}}
+              </td>
               <td>{{order.order.phoneNumber}}</td>
               <td>
-                {{format-number order.handlingUnitQuantity format="0.00"}}
-                {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
+                {{format-number order.order.handlingUnitQuantity format="0.00"}}
+                {{order.order.handlingUnitType}} / {{order.order.volume}} ft<sup>3</sup>
               </td>
             </tr>
           {{else}}
@@ -87,8 +93,8 @@ Load planning for
             <tr>
               <td colspan="7">
                 <h3>
-                  Load volume: {{format-number scheduleSumVolume format="0.00"}} / {{scheduleTruck.maxVolume}} ft<sup>3</sup>
-                  (+ return volume: {{format-number scheduleSumReturnVolume format="0.00"}} / {{scheduleTruck.maxVolume}} ft<sup>3</sup>)
+                  Remaining volume (+ return): {{format-number scheduleRemainingVolume format="0.00"}}
+                  (+ {{format-number scheduleRemainingReturnVolume format="0.00"}}) ft<sup>3</sup>
                 </h3>
               </td>
             </tr>

@@ -28,7 +28,13 @@
         <td>{{order.deliveryShift}}</td>
         <td>{{order.purchaseOrderNumber}}</td>
         <td>{{order.type}}</td>
-        <td>{{order.clientName}}</td>
+        <td>
+          {{#if (eq order.type 'Return')}}
+            {{order.originName}}
+          {{else}}
+            {{order.clientName}}
+          {{/if}}
+        </td>
         <td>{{order.phoneNumber}}</td>
         <td>
           <button class="ui icon button" {{action 'editOrder' order}} title="Edit order">

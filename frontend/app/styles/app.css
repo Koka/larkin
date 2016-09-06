@@ -25,6 +25,21 @@ body > .ember-view {
   cursor: pointer;
 }
 
+.load-plan-not-available {
+  text-align: center;
+  color: gray;
+}
+
+.load-plan-list {
+  margin-bottom: 2em;
+  min-height: 5em;
+}
+
+.load-plan-force-bottom {
+  position: absolute;
+  bottom: 1em;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */

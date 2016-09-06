@@ -9,6 +9,8 @@ export default Ember.Controller.extend({
     this.set('scheduleDate', null);
     this.set('scheduleTruck', null);
     this.set('scheduleShift', null);
+    this.set('scheduleTruckRemainingVolume', 0);
+    this.set('scheduleTruckRemainingReturnVolume', 0);
     this.get('availableOrders').clear();
   },
 
@@ -17,20 +19,32 @@ export default Ember.Controller.extend({
   }),
 
   scheduleSumVolume: Ember.computed('scheduleOrders.@each.volume', 'scheduleOrders.@each.type', function () {
-    return this.get('scheduleOrders') ? Ember.A(this.get('scheduleOrders')).filterBy('type', 'Delivery').reduce((acc, i) => acc + i.get('volume'), 0) : 0;
+    return this.get('scheduleOrders') ? Ember.A(this.get('scheduleOrders')).filterBy('type', 'Delivery').reduce((acc, i) => acc + parseFloat(i.get('volume')), 0) : 0;
   }),
 
   scheduleSumReturnVolume: Ember.computed('scheduleOrders.@each.volume', 'scheduleOrders.@each.type', function () {
-    return this.get('scheduleOrders') ? Ember.A(this.get('scheduleOrders')).filterBy('type', 'Return').reduce((acc, i) => acc + i.get('volume'), 0) : 0;
+    return this.get('scheduleOrders') ? Ember.A(this.get('scheduleOrders')).filterBy('type', 'Return').reduce((acc, i) => acc + parseFloat(i.get('volume')), 0) : 0;
+  }),
+
+  scheduleRemainingVolume: Ember.computed('scheduleSumVolume', 'scheduleTruckRemainingVolume', function() {
+    var remaining = this.get("scheduleTruckRemainingVolume") - this.get("scheduleSumVolume");
+    return remaining >= 0 ? remaining : 0;
+  }),
+
+  scheduleRemainingReturnVolume: Ember.computed('scheduleSumReturnVolume', 'scheduleTruckRemainingVolume', function() {
+    var remaining = this.get("scheduleTruckRemainingReturnVolume") - this.get("scheduleSumReturnVolume");
+    return remaining >= 0 ? remaining : 0;
   }),
 
   actions : {
-    openScheduleDialog(date, truck, shift) {
+    openScheduleDialog(date, truck, shift, remainingVolume, remainingReturnVolume) {
       this._clearScheduleDialog();
 
       this.set('scheduleDate', date);
       this.set('scheduleTruck', truck);
       this.set('scheduleShift', shift);
+      this.set('scheduleTruckRemainingVolume', remainingVolume);
+      this.set('scheduleTruckRemainingReturnVolume', remainingReturnVolume);
       this.get('availableOrders').clear();
 
       this.store.query('Order', { outdated: false }).then(orders => {

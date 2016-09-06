@@ -1,23 +1,26 @@
-<button class="ui mini primary right floated icon button" {{action 'add'}}>
+<button class="ui mini primary right floated icon button {{unless shiftAvailable 'disabled'}}" {{action 'add'}}>
   <i class="plus icon"></i>
 </button>
 
-<ul>
-  {{#each scheduledOrders as |order|}}
-    <li>
-      Order {{order.purchaseOrderNumber}} [
-      {{format-number order.handlingUnitQuantity format="0.00"}}
-      {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
-      ]
-      <i class="red remove icon force-pointer" {{action 'remove' order}}></i>
-    </li>
-  {{else}}
-    <li>No orders scheduled yet</li>
-  {{/each}}
-</ul>
-
-<div class="ui label">
-  <i class="cube icon"></i>Volume: {{format-number sumVolume format="0.00"}} / {{truck.maxVolume}} ft<sup>3</sup>
-</div>
+{{#if shiftAvailable}}
+  <ul class="load-plan-list">
+    {{#each scheduledOrders as |order|}}
+      <li>
+        Order {{order.purchaseOrderNumber}}
+        {{#if (eq order.type 'Return')}}(returned){{/if}}
+        [
+        {{format-number order.handlingUnitQuantity format="0.00"}}
+        {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
+        ]
+        <i class="red remove icon force-pointer" {{action 'remove' order}}></i>
+      </li>
+    {{/each}}
+  </ul>
+  <div class="ui label load-plan-force-bottom">
+    <i class="cube icon"></i>Volume (+ returned): {{format-number sumVolume format="0.00"}} (+ {{format-number sumReturnedVolume format="0.00"}}) / {{truck.maxVolume}} ft<sup>3</sup>
+  </div>
+{{else}}
+  <h3 class="load-plan-not-available">Shift is not available</h3>
+{{/if}}
 
 {{yield}}
