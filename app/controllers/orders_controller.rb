@@ -25,6 +25,7 @@ class OrdersController < ApplicationController
   def update
     order = Order.find(params[:id])
     order.update_attributes!(params.require(:order).permit!)
+    render json: Order.find_by(id: params[:id])
   end
 
   def upload

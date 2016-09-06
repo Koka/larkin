@@ -35,7 +35,7 @@ Load planning for
 {{#ui-modal name="schedule" class="fullscreen schedule" onApprove=(action 'doSchedule') onDeny=(action 'cancelSchedule')}}
   <i class="close icon"></i>
   <div class="header">
-    Schedule orders for load on {{moment-format scheduleDate 'MM/DD/YYYY'}} (shift: {{scheduleShift}}, truck: {{scheduleTruck.name}})
+    Schedule orders for load on {{#if scheduleDate}}{{moment-format scheduleDate 'MM/DD/YYYY'}}{{/if}} (shift: {{scheduleShift}}, truck: {{scheduleTruck.name}})
   </div>
   <div class="image content">
     <div class="image">
@@ -58,10 +58,10 @@ Load planning for
           {{#each availableOrders as |order|}}
             <tr class="{{if (eq order.type 'Return') 'warning'}}">
               <td>{{input type="checkbox" checked=order.selected}}</td>
-              <td>{{order.purchaseOrderNumber}}</td>
-              <td>{{order.type}}</td>
-              <td>{{order.clientName}}</td>
-              <td>{{order.phoneNumber}}</td>
+              <td>{{order.order.purchaseOrderNumber}}</td>
+              <td>{{order.order.type}}</td>
+              <td>{{order.order.clientName}}</td>
+              <td>{{order.order.phoneNumber}}</td>
               <td>
                 {{format-number order.handlingUnitQuantity format="0.00"}}
                 {{order.handlingUnitType}} / {{order.volume}} ft<sup>3</sup>
