@@ -47,6 +47,7 @@ Load planning for
         <thead>
           <tr>
             <th></th>
+            <th>Delivery shift</th>
             <th>Purchase order</th>
             <th>Type</th>
             <th>Client name</th>
@@ -56,8 +57,18 @@ Load planning for
         </thead>
         <tbody>
           {{#each availableOrders as |order|}}
-            <tr class="{{if (eq order.type 'Return') 'warning'}}">
+            <tr class="{{if (eq order.order.type 'Return') 'warning'}} {{if order.selected 'positive'}}">
               <td>{{input type="checkbox" checked=order.selected}}</td>
+              <td>
+                {{#if order.order.deliveryShift}}
+                  {{#unless order.selected}}
+                    <i class="attention icon"></i>
+                  {{else}}
+                    <i class="checkmark icon"></i>
+                  {{/unless}}
+                {{/if}}
+                {{order.order.deliveryShift}}
+              </td>
               <td>{{order.order.purchaseOrderNumber}}</td>
               <td>{{order.order.type}}</td>
               <td>{{order.order.clientName}}</td>
@@ -68,13 +79,13 @@ Load planning for
               </td>
             </tr>
           {{else}}
-            <tr><td colspan="6" class="empty-table-message">No orders available for loading!</td></tr>
+            <tr><td colspan="7" class="empty-table-message">No orders available for loading!</td></tr>
           {{/each}}
         </tbody>
         {{#if (gt availableOrders.length 0)}}
           <tfoot>
             <tr>
-              <td colspan="6">
+              <td colspan="7">
                 <h3>
                   Load volume: {{format-number scheduleSumVolume format="0.00"}} / {{scheduleTruck.maxVolume}} ft<sup>3</sup>
                   (+ return volume: {{format-number scheduleSumReturnVolume format="0.00"}} / {{scheduleTruck.maxVolume}} ft<sup>3</sup>)
