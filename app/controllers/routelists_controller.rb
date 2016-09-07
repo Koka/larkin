@@ -55,7 +55,7 @@ class RoutelistsController < ApplicationController
         begin
           render :pdf => @routelist
         rescue Exception => e
-          logger.error "Failed to create PDF..."
+          logger.error "Failed to create PDF!"
 
           log_file = e.message.scan(/\/.*\.log/).first
           if log_file && File.exists?(log_file)
