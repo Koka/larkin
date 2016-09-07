@@ -16,6 +16,6 @@ Rails.application.routes.draw do
   get 'trucks/:id', to: 'trucks#show'
 
   get 'routelists', to: 'routelists#index'
-  get 'routelists/:id', to: 'routelists#show'
+  get 'routelists/:id', to: 'routelists#show', :defaults => { :format => 'json' }
   get 'routelists/:id/stops', to: 'routelists#stops'
 end

@@ -38,23 +38,50 @@ class RoutelistsController < ApplicationController
       )
     end
 
-    routelist = list[0]
-    routelist[:links] = {
-      stops: 'stops'
-    }
+    @routelist = list[0]
 
-    render json: {routelist: routelist}
+    puts @routelist
+
+    respond_to do |format|
+      format.json {
+        @routelist[:links] = {
+          stops: 'stops'
+        }
+        render :json => {routelist: @routelist}
+      }
+      format.pdf {
+        @routelist[:stops] = get_stops(id)
+        @routelist[:truck] = Truck.find(id[:truck])
+        begin
+          render :pdf => @routelist
+        rescue Exception => e
+          logger.error "Failed to create PDF..."
+
+          log_file = e.message.scan(/\/.*\.log/).first
+          if log_file && File.exists?(log_file)
+              puts "--- Latex Log ---\n"
+              puts File.read(log_file)
+              puts "---   Latex Log End    ---\n\n"
+          end
+        end
+      }
+    end
+
   end
 
   def stops
     id = parse_id
 
-    list = Order.where(load_truck_id: id[:truck], load_shift: id[:shift], load_date: id[:date])
+    list = get_stops(id)
 
     render json: { orders: list}
   end
 
   private
+    def get_stops(id)
+      Order.where(load_truck_id: id[:truck], load_shift: id[:shift], load_date: id[:date])
+    end
+
     def parse_id
       id = params[:id].split(':')
       {

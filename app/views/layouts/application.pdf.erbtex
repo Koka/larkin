@@ -1,0 +1,11 @@
+\documentclass[12pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{times}
+
+\begin{document}
+\pagenumbering{gobble}
+\clearpage
+\thispagestyle{empty}
+<%= yield %>
+\end{document}

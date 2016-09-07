@@ -1,0 +1,19 @@
+\section*{Route list for <%= lesc @routelist['delivery_date'] %> (shift: <%= lesc @routelist['delivery_shift']%>, truck: <%= lesc @routelist[:truck].name%>)}
+
+\begin{enumerate}
+
+  \item Larkin LLC (loading for delivery)
+  <% @routelist[:stops].each do |order| %>
+    \item Order <%= lesc order.purchase_order_number%>;
+    <% unless order.origin_name == 'Larkin LLC' then %>
+      <%= lesc order.origin_country%>, <%= lesc order.origin_zip%> <%= lesc order.origin_city%> <%= lesc order.origin_state%>, <%= lesc order.origin_address%>,
+      <%= lesc order.origin_name%> (load <%= lesc order.handling_unit_quantity%> <%= lesc order.handling_unit_type%>)
+    <% else %>
+      <%= lesc order.destination_country%>, <%= lesc order.destination_zip%> <%= lesc order.destination_city%> <%= lesc order.destination_state%>, <%= lesc order.destination_address%>,
+      <%= lesc order.client_name%> (unload <%= lesc order.handling_unit_quantity%> <%= lesc order.handling_unit_type%>)
+    <% end %>, Call <%= lesc order.phone_number%>
+  <% end %>
+
+  \item Larkin LLC (unloading of returns)
+
+\end{enumerate}
