@@ -1,11 +1,10 @@
 import Ember from 'ember';
-import EmberUploader from 'ember-uploader';
 
 export default Ember.Controller.extend({
   actions : {
 
     editOrder(order) {
-      this.transitionToRoute('delivery.orders.edit', order.get('id'), 'list');
+      this.transitionToRoute('delivery.orders.edit', order.get('id'), 'future');
     },
 
     cancelOrder(order) {

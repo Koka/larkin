@@ -4,18 +4,19 @@ class OrdersController < ApplicationController
   before_action :authenticate_user
 
   def index
-    pending = params[:pending]
-    tomorrow = Date.tomorrow
-    if pending then
-      query = Order.where.not(load_truck_id: nil)
-      query = query.where("to_date(delivery_date, 'MM/DD/YYYY') = ?", tomorrow)
-      render json: query
-    else
-      query = Order.order(:delivery_date, "case delivery_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end", :client_name)
-      query = query.where(load_truck_id: nil)
-      render json: query.where("to_date(delivery_date, 'MM/DD/YYYY') = ?", tomorrow) unless (params[:outdated] == 'true')
-      render json: query.where("delivery_date is null OR NOT delivery_date SIMILAR TO '(0?[1-9]|1[0-2])/(0?[1-9]|1[0-9]|2[0-9]|3[01])/(19|20)[0-9]{2}' OR to_date(delivery_date, 'MM/DD/YYYY') < :date", date: tomorrow) if (params[:outdated] == 'true')
-    end
+    query = Order.order(
+      "coalesce(load_date, to_date(delivery_date, 'MM/DD/YYYY')) DESC",
+      "(case coalesce(load_shift, delivery_shift) when 'M' then 0 when 'N' then 1 when 'E' then 2 else -1 end) DESC",
+      :client_name
+    )
+
+    query = query.where(load_truck_id: nil) if (params[:completed] == 'false')
+    query = query.where.not(load_truck_id: nil) if (params[:completed] == 'true')
+
+    query = query.where("to_date(delivery_date, 'MM/DD/YYYY') >= current_date") if (params[:outdated] == 'false')
+    query = query.where.not("to_date(delivery_date, 'MM/DD/YYYY') >= current_date") if (params[:outdated] == 'true')
+
+    render json: query
   end
 
   def show

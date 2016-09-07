@@ -1,77 +1,10 @@
-<h3 class="noselect">
-  Order list for
-  {{moment-format currentDate 'MM/DD/YYYY'}}
-
-  <button class="ui mini right floated labeled icon negative button" {{action 'showOutdatedOrders'}}>
-      <i class="alarm icon"></i>Show outdated orders
-  </button>
-
-  <button class="ui mini right floated labeled icon button" {{action 'openUploadDialog'}}>
-      <i class="upload icon"></i>Upload orders CSV
-  </button>
-</h3>
-
-<table class="ui very basic {{if model.length 'selectable'}} compact celled table">
-  <thead>
-    <tr>
-      <th>Delivery shift</th>
-      <th>Purchase order</th>
-      <th>Type</th>
-      <th>Client name</th>
-      <th>Phone number</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each model as |order|}}
-      <tr class="{{if (eq order.type 'Return') 'warning'}} {{unless order.isValid 'error'}}">
-        <td>{{order.deliveryShift}}</td>
-        <td>{{order.purchaseOrderNumber}}</td>
-        <td>{{order.type}}</td>
-        <td>
-          {{#if (eq order.type 'Return')}}
-            {{order.originName}}
-          {{else}}
-            {{order.clientName}}
-          {{/if}}
-        </td>
-        <td>{{order.phoneNumber}}</td>
-        <td>
-          <button class="ui icon button" {{action 'editOrder' order}} title="Edit order">
-              <i class="edit icon"></i>
-          </button>
-        </td>
-      </tr>
-    {{else}}
-      <tr><td colspan="6" class="empty-table-message">Sorry, no orders for tomorrow!</td></tr>
-    {{/each}}
-  </tbody>
-</table>
-
-{{#ui-modal name="upload" class="upload" onApprove=(action 'doUpload') onDeny=(action 'cancelUpload')}}
-  <i class="close icon"></i>
+<div class="ui message">
   <div class="header">
-    Upload new orders
+    Actual orders
   </div>
-  <div class="image content">
-    <div class="image">
-      <i class="shop icon"></i>
-    </div>
-    <div class="description">
-      <p>Please, select your orders CSV file using control below:</p>
-      <form>
-        {{file-upload files=orderFiles}}
-      </form>
-    </div>
-  </div>
-  <div class="actions">
-      <div class="ui positive {{if (eq orderFiles.length 0) 'disabled'}} button">
-        <i class="upload icon"></i>
-        Upload
-      </div>
-      <div class="ui deny button">
-        <i class="cancel icon"></i>
-        Cancel
-      </div>
-  </div>
-{{/ui-modal}}
+  <p>
+    This orders are need to be delivered. You don't need to take each order, edit it if necessary and schedule it for loading.
+  </p>
+</div>
+
+{{order-list orders=model onEdit=(action 'editOrder') onCancel=(action 'cancelOrder')}}

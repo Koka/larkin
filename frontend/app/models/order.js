@@ -57,7 +57,7 @@ export default DS.Model.extend(Validator, {
     },
     handlingUnitQuantity: {
       numericality: {
-        greaterThanOrEqualTo: 0
+        greaterThan: 0
       }
     },
     handlingUnitType: {

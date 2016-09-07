@@ -1,17 +1,18 @@
 class RoutelistsController < ApplicationController
   before_action :authenticate_user
-  
+
   def index
     list = ActiveRecord::Base.connection_pool.with_connection do |con|
       con.exec_query(
         'select load_date || \':\' || load_shift || \':\' || load_truck_id as id,'\
-        'load_date as delivery_date,'\
+        "to_char(load_date, 'MM/DD/YYYY') as delivery_date,"\
         'load_shift as delivery_shift,'\
-        'count(distinct id) as stop_count,'\
+        'count(distinct id) + 2 as stop_count,'\
         'load_truck_id as truck_id '\
         'from orders '\
-        'where load_truck_id is not null '\
-        'group by load_date, load_shift, load_truck_id',
+        'where load_date >= current_date AND load_truck_id is not null '\
+        'group by load_date, load_shift, load_truck_id '\
+        "order by load_date ASC, (case load_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end) ASC, load_truck_id",
         'Load route lists'
       )
     end
@@ -24,13 +25,14 @@ class RoutelistsController < ApplicationController
     list = ActiveRecord::Base.connection_pool.with_connection do |con|
       con.exec_query(
         'select load_date || \':\' || load_shift || \':\' || load_truck_id as id,'\
-        'load_date as delivery_date,'\
+        "to_char(load_date, 'MM/DD/YYYY') as delivery_date,"\
         'load_shift as delivery_shift,'\
-        'count(distinct id) as stop_count,'\
+        'count(distinct id) + 2 as stop_count,'\
         'load_truck_id as truck_id '\
         'from orders '\
-        'where load_truck_id = $1 AND load_shift = $2 AND load_date = $3 '\
-        'group by load_date, load_shift, load_truck_id',
+        'where load_date >= current_date AND load_truck_id = $1 AND load_shift = $2 AND load_date = $3 '\
+        'group by load_date, load_shift, load_truck_id '\
+        "order by load_date ASC, (case load_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end) ASC, load_truck_id",
         'Load route list',
         [
           bind_value('truck', :integer, id[:truck]),

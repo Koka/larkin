@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  moment: Ember.inject.service(),
   currentDate : null,
   availableOrders : Ember.A([]),
   pendingOrders : Ember.A([]),
@@ -36,7 +37,24 @@ export default Ember.Controller.extend({
     return remaining >= 0 ? remaining : 0;
   }),
 
+  calendarCanGoBack: Ember.computed('currentDate', function () {
+    return this.get('currentDate').isSameOrAfter(this.get('moment').moment());
+  }),
+
   actions : {
+
+    calendarToday() {
+      this.set('currentDate', this.get('moment').moment());
+    },
+
+    calendarBack() {
+      this.set('currentDate', this.get('moment').moment(this.get('currentDate').subtract(1, 'days')));
+    },
+
+    calendarForward() {
+      this.set('currentDate', this.get('moment').moment(this.get('currentDate').add(1, 'days')));
+    },
+
     openScheduleDialog(date, truck, shift, remainingVolume, remainingReturnVolume) {
       this._clearScheduleDialog();
 

@@ -8,7 +8,7 @@ export default Ember.Component.extend({
     return this.get('truck.availableShifts') ? this.get('truck.availableShifts').contains(this.get('shift')) : false;
   }),
 
-  scheduledOrders: Ember.computed('orders.@each.loadTruck', 'orders.@each.loadShift', 'orders.@each.loadDate', function () {
+  scheduledOrders: Ember.computed('date', 'orders.@each.loadTruck', 'orders.@each.loadShift', 'orders.@each.loadDate', function () {
     if (!this.get('orders')) {
       return [];
     }

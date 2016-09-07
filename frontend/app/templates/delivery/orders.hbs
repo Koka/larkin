@@ -1,1 +1,45 @@
+<h3 class="noselect">
+  <div class="ui tabular menu">
+
+    {{#link-to 'delivery.orders.list' class="item"}}Actual{{/link-to}}
+    {{#link-to 'delivery.orders.outdated' class="item"}}Outdated{{/link-to}}
+    {{#link-to 'delivery.orders.completed' class="item"}}Scheduled{{/link-to}}
+
+    <div class="right menu">
+      <a class="item" {{action 'openUploadDialog'}}>
+          <i class="upload icon"></i>Upload orders CSV
+      </a>
+    </div>
+  </div>
+</h3>
+
 {{outlet}}
+
+
+{{#ui-modal name="upload" class="upload" onApprove=(action 'doUpload') onDeny=(action 'cancelUpload')}}
+  <i class="close icon"></i>
+  <div class="header">
+    Upload new orders
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="shop icon"></i>
+    </div>
+    <div class="description">
+      <p>Please, select your orders CSV file using control below:</p>
+      <form>
+        {{file-upload files=orderFiles}}
+      </form>
+    </div>
+  </div>
+  <div class="actions">
+      <div class="ui positive {{if (eq orderFiles.length 0) 'disabled'}} button">
+        <i class="upload icon"></i>
+        Upload
+      </div>
+      <div class="ui deny button">
+        <i class="cancel icon"></i>
+        Cancel
+      </div>
+  </div>
+{{/ui-modal}}

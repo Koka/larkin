@@ -3,7 +3,6 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   name: DS.attr(),
-  tripsPerDay: DS.attr("number"),
   maxWeight: DS.attr("number"),
   maxVolume: DS.attr("number"),
 
@@ -11,7 +10,7 @@ export default DS.Model.extend({
 
   availableShifts: Ember.computed('tripsPerDay', function () {
     const allShifts = ['M', 'N', 'E'];
-
+/*
     const availableShifts = [];
     let tripsLeft = this.get('tripsPerDay');
     let needRest = false;
@@ -28,5 +27,8 @@ export default DS.Model.extend({
     }
 
     return Ember.A(availableShifts);
+*/
+    //TODO: calculate available shifts
+    return Ember.A(allShifts);
   })
 });

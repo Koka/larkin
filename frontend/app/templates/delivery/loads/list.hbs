@@ -1,6 +1,8 @@
 <h3 class="noselect">
-Load planning for
-{{moment-format currentDate 'MM/DD/YYYY'}}
+  <i class="calendar icon force-pointer {{unless calendarCanGoBack 'disabled'}}" title="Go to today" {{action 'calendarToday'}}></i>
+  <i class="angle blue left icon force-pointer {{unless calendarCanGoBack 'disabled'}}" title="Previous day" {{action 'calendarBack'}}></i>
+  {{moment-format currentDate 'MM/DD/YYYY'}}
+  <i class="angle blue right icon force-pointer" title="Next day" {{action 'calendarForward'}}></i>
 </h3>
 <div class="ui celled stackable grid">
   <div class="row">
@@ -47,6 +49,7 @@ Load planning for
         <thead>
           <tr>
             <th></th>
+            <th>Date</th>
             <th>Shift</th>
             <th>Purchase order</th>
             <th>Type</th>
@@ -57,8 +60,9 @@ Load planning for
         </thead>
         <tbody>
           {{#each availableOrders as |order|}}
-            <tr class="{{if (eq order.order.type 'Return') 'warning'}} {{if order.selected 'positive'}} {{if (or (and (eq order.order.type 'Delivery') (gt order.order.volume scheduleRemainingVolume)) (and (eq order.order.type 'Return') (gt order.order.volume scheduleRemainingReturnVolume))) 'disabled'}}">
+            <tr class="{{unless order.order.isValid 'error'}} {{if (eq order.order.type 'Return') 'warning'}} {{if order.selected 'positive'}} {{if (or (not order.order.isValid) (and (eq order.order.type 'Delivery') (gt order.order.volume scheduleRemainingVolume)) (and (eq order.order.type 'Return') (gt order.order.volume scheduleRemainingReturnVolume))) 'disabled'}}">
               <td>{{input type="checkbox" checked=order.selected}}</td>
+              <td>{{order.order.deliveryDate}}</td>
               <td>
                 {{#if order.order.deliveryShift}}
                   {{#unless order.selected}}
@@ -85,12 +89,12 @@ Load planning for
               </td>
             </tr>
           {{else}}
-            <tr><td colspan="7" class="empty-table-message">No orders available for loading!</td></tr>
+            <tr><td colspan="8" class="empty-table-message">No orders available for loading!</td></tr>
           {{/each}}
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="7">
+            <td colspan="8">
               <h3>
                 Remaining volume (+ return): {{format-number scheduleRemainingVolume format="0.00"}}
                 (+ {{format-number scheduleRemainingReturnVolume format="0.00"}}) ft<sup>3</sup>

@@ -1,8 +1,8 @@
 class TrucksController < ApplicationController
   before_action :authenticate_user
-  
+
   def index
-    render json: Truck.all
+    render json: Truck.order(:id).all
   end
 
   def show
