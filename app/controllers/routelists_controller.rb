@@ -1,4 +1,6 @@
 class RoutelistsController < ApplicationController
+  before_action :authenticate_user
+  
   def index
     list = ActiveRecord::Base.connection_pool.with_connection do |con|
       con.exec_query(
