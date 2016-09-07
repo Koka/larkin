@@ -1,4 +1,23 @@
 <h2 class="ui header">Route list for {{moment-format model.deliveryDate 'MM/DD/YYYY'}} (shift: {{model.deliveryShift}}, truck: {{model.truck.name}})</h2>
+
+<h3>Stops:</h3>
+<ol>
+  <li>Larkin LLC (loading for delivery)</li>
+  {{#each model.stops as |order|}}
+    <li>
+      Order {{order.purchaseOrderNumber}};
+      {{#if (eq order.type 'Return')}}
+        {{order.originCountry}}, {{order.originZip}} {{order.originCity}} {{order.originState}}, {{order.originAddress}},
+        {{order.originName}} (load {{order.handlingUnitQuantity}} {{order.handlingUnitType}})
+      {{else}}
+        {{order.destinationCountry}}, {{order.destinationZip}} {{order.destinationCity}} {{order.destinationState}}, {{order.destinationAddress}},
+        {{order.clientName}} (unload {{order.handlingUnitQuantity}} {{order.handlingUnitType}})
+      {{/if}}, Call {{order.phoneNumber}}
+    </li>
+  {{/each}}
+  <li>Larkin LLC (unloading of returns)</li>
+</ol>
+
 <div>
     <button class="ui primary button" {{action "save" model}}>Save</button>
     <button class="ui button" {{action "cancel" model}}>Cancel</button>

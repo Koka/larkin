@@ -5,5 +5,7 @@ export default DS.Model.extend({
   deliveryShift: DS.attr(),
   stopCount: DS.attr("number"),
 
-  truck: DS.belongsTo('truck')
+  truck: DS.belongsTo('truck'),
+
+  stops: DS.hasMany('order')
 });

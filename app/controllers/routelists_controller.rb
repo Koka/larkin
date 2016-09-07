@@ -17,7 +17,7 @@ class RoutelistsController < ApplicationController
   end
 
   def show
-    id = params[:id].split(':')
+    id = parse_id
 
     list = ActiveRecord::Base.connection_pool.with_connection do |con|
       con.exec_query(
@@ -31,16 +31,39 @@ class RoutelistsController < ApplicationController
         'group by load_date, load_shift, load_truck_id',
         'Load route list',
         [
-          bind_value('truck', :integer, id[2]),
-          bind_value('shift', :string, id[1]),
-          bind_value('date', :date, id[0])
+          bind_value('truck', :integer, id[:truck]),
+          bind_value('shift', :string, id[:shift]),
+          bind_value('date', :date, id[:date])
         ]
       )
     end
-    render json: {routelist: list[0]}
+
+    routelist = list[0]
+    routelist[:links] = {
+      stops: 'stops'
+    }
+
+    render json: {routelist: routelist}
+  end
+
+  def stops
+    id = parse_id
+
+    list = Order.where(load_truck_id: id[:truck], load_shift: id[:shift], load_date: id[:date])
+
+    render json: { orders: list}
   end
 
   private
+    def parse_id
+      id = params[:id].split(':')
+      {
+        truck: id[2],
+        shift: id[1],
+        date: id[0]
+      }
+    end
+
     def bind_value(name, type, value)
       ActiveRecord::Attribute.from_user(name, value, ActiveRecord::Type.registry.lookup(type))
     end

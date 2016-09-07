@@ -17,4 +17,5 @@ Rails.application.routes.draw do
 
   get 'routelists', to: 'routelists#index'
   get 'routelists/:id', to: 'routelists#show'
+  get 'routelists/:id/stops', to: 'routelists#stops'
 end
