@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907125451) do
+ActiveRecord::Schema.define(version: 20160907134722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20160907125451) do
     t.date     "load_date"
     t.integer  "load_truck_id"
     t.string   "load_shift"
+    t.boolean  "cancelled"
     t.index ["delivery_date"], name: "index_orders_on_delivery_date", using: :btree
     t.index ["load_date"], name: "index_orders_on_load_date", using: :btree
     t.index ["load_shift"], name: "index_orders_on_load_shift", using: :btree

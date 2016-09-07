@@ -13,6 +13,7 @@ Router.map(function() {
       this.route('outdated');
       this.route('edit', { path: ':id/:back'});
       this.route('completed');
+      this.route('cancelled');
     });
     this.route('loads', function() {
       this.route('list');

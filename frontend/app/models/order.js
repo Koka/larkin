@@ -28,6 +28,8 @@ export default DS.Model.extend(Validator, {
   loadShift: DS.attr(),
   loadTruck: DS.belongsTo('truck'),
 
+  cancelled: DS.attr('boolean'),
+
   type: Ember.computed('clientName', 'originName', function () {
     if (this.get('originName') === 'Larkin LLC' && this.get('clientName') !== 'Larkin LLC') {
       return 'Delivery';

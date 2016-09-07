@@ -10,6 +10,9 @@ class OrdersController < ApplicationController
       :client_name
     )
 
+    query = query.where(cancelled: false).or(query.where(cancelled: nil)) if (params[:cancelled] == 'false')
+    query = query.where(cancelled: true) if (params[:cancelled] == 'true')
+
     query = query.where(load_truck_id: nil) if (params[:completed] == 'false')
     query = query.where.not(load_truck_id: nil) if (params[:completed] == 'true')
 

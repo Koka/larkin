@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  orders: Ember.inject.service(),
+
   actions : {
 
     editOrder(order) {
@@ -8,8 +10,9 @@ export default Ember.Controller.extend({
     },
 
     cancelOrder(order) {
-      //TODO: implement me
-      console.log("Order cancelled " + order);
+      this.get('orders').cancelOrder(order).then(() => {
+        this.get('model').removeObject(order);
+      });
     }
   }
 });
