@@ -57,6 +57,59 @@ class OrdersController < ApplicationController
     })
   end
 
+  def move_up
+    result = ActiveRecord::Base.connection_pool.with_connection do |con|
+      con.exec_query("
+          select
+          	(
+          		select o2.id
+          		from orders o2
+          		where (o2.load_truck_id, o2.load_shift, o2.load_date) = (o1.load_truck_id, o1.load_shift, o1.load_date)
+          			and o2.load_ordinal < o1.load_ordinal
+          		limit 1
+          	) as target_id
+          from orders o1 where o1.id = $1
+        ",
+        'Move up: select target id',
+        [
+          bind_value('id', :integer, params[:id])
+        ])
+    end
+
+    target = result[0] && result[0]["target_id"] ? result[0]["target_id"] : nil
+
+    if target then
+      swap_orders_load_ordinals(params[:id], target)
+    end
+  end
+
+
+
+  def move_down
+    result = ActiveRecord::Base.connection_pool.with_connection do |con|
+      con.exec_query("
+          select
+          	(
+          		select o2.id
+          		from orders o2
+          		where (o2.load_truck_id, o2.load_shift, o2.load_date) = (o1.load_truck_id, o1.load_shift, o1.load_date)
+          			and o2.load_ordinal > o1.load_ordinal
+          		limit 1
+          	) as target_id
+          from orders o1 where o1.id = $1
+        ",
+        'Move down: select target id',
+        [
+          bind_value('id', :integer, params[:id])
+        ])
+    end
+
+    target = result[0] && result[0]["target_id"] ? result[0]["target_id"] : nil
+    if target then
+      swap_orders_load_ordinals(params[:id], target)
+    end
+  end
+
   def update
     order = Order.find(params[:id])
     order.update_attributes!(params.require(:order).permit!)
@@ -114,4 +167,17 @@ class OrdersController < ApplicationController
 
   end
 
+  private
+
+    def swap_orders_load_ordinals(id1, id2)
+      o1 = Order.find id1
+      o2 = Order.find id2
+      ord1 = o1.load_ordinal
+      ord2 = o2.load_ordinal
+      Order.transaction do
+        o2.update_attributes!({load_ordinal: -ord1})
+        o1.update_attributes!({load_ordinal: ord2})
+        o2.update_attributes!({load_ordinal: ord1})
+      end
+    end
 end

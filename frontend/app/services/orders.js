@@ -53,14 +53,28 @@ export default Ember.Service.extend({
   },
 
   moveUpInRouteList(order) {
-    //TODO: implement me
-    console.log("UP " + order);
-    return Ember.RSVP.Promise.resolve();
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.get('session').authorize('authorizer:custom', (header, value) => {
+        Ember.$.ajax(`/orders/${order.get('id')}/move_up`, {
+          method: 'POST',
+          headers : {
+            [header] : value
+          }
+        }).then(() => resolve(), e => reject(e));
+      });
+    });
   },
 
   moveDownInRouteList(order) {
-    //TODO: implement me
-    console.log("DOWN " + order);
-    return Ember.RSVP.Promise.resolve();
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.get('session').authorize('authorizer:custom', (header, value) => {
+        Ember.$.ajax(`/orders/${order.get('id')}/move_down`, {
+          method: 'POST',
+          headers : {
+            [header] : value
+          }
+        }).then(() => resolve(), e => reject(e));
+      });
+    });
   }
 });

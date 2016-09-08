@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   put 'orders/:id/schedule', to: 'orders#schedule'
   post 'orders', to: 'orders#upload'
   post 'orders/:id/split', to: 'orders#split'
+  post 'orders/:id/move_up', to: 'orders#move_up'
+  post 'orders/:id/move_down', to: 'orders#move_down'
 
   get 'trucks', to: 'trucks#index'
   get 'trucks/:id', to: 'trucks#show'

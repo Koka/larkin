@@ -83,7 +83,7 @@ class RoutelistsController < ApplicationController
 
   private
     def get_stops(id)
-      Order.where(load_truck_id: id[:truck], load_shift: id[:shift], load_date: id[:date])
+      Order.order(:load_ordinal).where(load_truck_id: id[:truck], load_shift: id[:shift], load_date: id[:date])
     end
 
     def parse_id

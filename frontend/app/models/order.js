@@ -28,6 +28,7 @@ export default DS.Model.extend(Validator, {
   loadDate: DS.attr(),
   loadShift: DS.attr(),
   loadTruck: DS.belongsTo('truck'),
+  loadOrdinal: DS.attr('number'),
 
   cancelled: DS.attr('boolean'),
 
