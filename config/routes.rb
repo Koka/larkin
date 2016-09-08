@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   get 'trucks', to: 'trucks#index'
   get 'trucks/:id', to: 'trucks#show'
+  get 'trucks/:id/shift_available/:shift/:date', to: 'trucks#shifts'
 
   get 'routelists', to: 'routelists#index'
   get 'routelists/:id', to: 'routelists#show', :defaults => { :format => 'json' }

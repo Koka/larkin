@@ -2,33 +2,26 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
+  session: Ember.inject.service(),
+
   name: DS.attr(),
   maxWeight: DS.attr("number"),
   maxVolume: DS.attr("number"),
 
   driver: DS.belongsTo('user'),
 
-  availableShifts: Ember.computed('tripsPerDay', function () {
-    const allShifts = ['M', 'N', 'E'];
-/*
-    const availableShifts = [];
-    let tripsLeft = this.get('tripsPerDay');
-    let needRest = false;
-    let startShift = (allShifts.length - 1) - tripsLeft;
-    for (let i = startShift; i < allShifts.length; i++) {
-      if (needRest) {
-        needRest = false;
-        continue;
-      }
-      if (tripsLeft-- > 0) {
-        availableShifts.push(allShifts[i]);
-        needRest = true;
-      }
-    }
-
-    return Ember.A(availableShifts);
-*/
-    //TODO: calculate available shifts
-    return Ember.A(allShifts);
-  })
+  isShiftAvailable(date, shift) {
+    const promise = new Ember.RSVP.Promise((resolve, reject) => {
+      this.get('session').authorize('authorizer:custom', (header, value) => {
+        Ember.$.ajax(`/trucks/${this.get('id')}/shift_available/${shift}/${date.format('YYYY-MM-DD')}`, {
+          headers : {
+            [header] : value
+          }
+        }).then(arr => resolve(arr), e => reject(e));
+      });
+    });
+    return DS.PromiseObject.create({
+      promise
+    });
+  }
 });

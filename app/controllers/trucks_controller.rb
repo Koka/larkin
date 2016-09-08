@@ -8,4 +8,9 @@ class TrucksController < ApplicationController
   def show
     render json: Truck.find_by(id: params[:id])
   end
+
+  def shifts
+    #TODO: implement it
+    render json: true
+  end
 end

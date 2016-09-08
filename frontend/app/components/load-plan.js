@@ -4,8 +4,8 @@ export default Ember.Component.extend({
   tagName : '',
   moment: Ember.inject.service(),
 
-  shiftAvailable: Ember.computed('shift', 'truck.availableShifts', function () {
-    return this.get('truck.availableShifts') ? this.get('truck.availableShifts').contains(this.get('shift')) : false;
+  shiftAvailable: Ember.computed('shift', 'date', 'truck', function () {
+    return this.get('truck').isShiftAvailable(this.get('date'), this.get('shift'));
   }),
 
   scheduledOrders: Ember.computed('date', 'orders.@each.loadTruck', 'orders.@each.loadShift', 'orders.@each.loadDate', function () {
