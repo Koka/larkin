@@ -94,8 +94,4 @@ class RoutelistsController < ApplicationController
         date: id[0]
       }
     end
-
-    def bind_value(name, type, value)
-      ActiveRecord::Attribute.from_user(name, value, ActiveRecord::Type.registry.lookup(type))
-    end
 end
