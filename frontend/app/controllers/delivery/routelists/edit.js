@@ -15,14 +15,14 @@ export default Ember.Controller.extend({
    moveDown(order, disabled) {
      if (disabled) { return; }
      this.get('orders').moveDownInRouteList(order).then(() => {
-       this.get('model').reload();
+       this.get('model.stops').reload();
      });
    },
 
    moveUp(order, disabled) {
      if (disabled) { return; }
      this.get('orders').moveUpInRouteList(order).then(() => {
-       this.get('model').reload();
+       this.get('model.stops').reload();
      });
    }
  }

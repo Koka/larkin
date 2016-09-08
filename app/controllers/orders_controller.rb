@@ -122,12 +122,14 @@ class OrdersController < ApplicationController
       part = order.dup
 
       qty = order.handling_unit_quantity.to_i
-      order.handling_unit_quantity = qty / 2
-      part.handling_unit_quantity = qty - qty / 2
-
       vol = order.volume.to_f
-      order.volume = vol / 2
-      part.volume = vol - vol / 2
+      vol_per_item = vol / qty
+
+      order.handling_unit_quantity = qty / 2
+      part.handling_unit_quantity = qty - (qty / 2)
+
+      order.volume = vol_per_item * qty / 2
+      part.volume = vol - (vol_per_item * qty / 2)
 
       order.save
       part.save

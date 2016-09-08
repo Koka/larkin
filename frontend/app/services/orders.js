@@ -47,7 +47,7 @@ export default Ember.Service.extend({
           headers : {
             [header] : value
           }
-        }).then(part => resolve(part), e => reject(e));
+        }).then(part => resolve(), e => reject(e));
       });
     });
   },

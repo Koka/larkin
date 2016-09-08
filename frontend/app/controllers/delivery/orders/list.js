@@ -17,10 +17,7 @@ export default Ember.Controller.extend({
 
     splitOrder(order) {
       this.get('orders').splitOrder(order).then(part => {
-        if (part) {
-          this.get('model').addObject(part);
-          order.reload();
-        }
+        this.send("refreshMe");
       });
     }
   }
