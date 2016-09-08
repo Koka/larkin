@@ -2,6 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{times}
+\usepackage[margin=1in]{geometry}
 
 \begin{document}
 \pagenumbering{gobble}
