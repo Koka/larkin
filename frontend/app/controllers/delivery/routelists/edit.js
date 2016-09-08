@@ -1,18 +1,29 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  _goBack() {
-    this.transitionToRoute('delivery.routelists.list');
-  },
+  orders: Ember.inject.service(),
+
+  lastStop: Ember.computed('model.stops.length', function () {
+    return this.get('model.stops.length') - 1;
+  }),
 
   actions : {
-   save(rec) {
-     //TODO: reorder stops
-     this._goBack();
+   back() {
+     this.transitionToRoute('delivery.routelists.list');
    },
 
-   cancel() {
-     this._goBack();
+   moveDown(order, disabled) {
+     if (disabled) { return; }
+     this.get('orders').moveDownInRouteList(order).then(() => {
+       this.get('model').reload();
+     });
+   },
+
+   moveUp(order, disabled) {
+     if (disabled) { return; }
+     this.get('orders').moveUpInRouteList(order).then(() => {
+       this.get('model').reload();
+     });
    }
  }
 });

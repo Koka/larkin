@@ -4,6 +4,7 @@ import Validator from 'ember-model-validator/mixins/model-validator';
 
 export default DS.Model.extend(Validator, {
   deliveryDate: DS.attr(),
+  parsedDeliveryDate: DS.attr('date'),
   deliveryShift: DS.attr(),
   originName: DS.attr(),
   originAddress: DS.attr(),

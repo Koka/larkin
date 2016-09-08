@@ -44,11 +44,15 @@ export default Ember.Controller.extend({
   actions : {
 
     calendarToday() {
-      this.set('currentDate', this.get('moment').moment());
+      if (this.get('moment').moment(this.get('currentDate')).startOf('day').isAfter(this.get('moment').moment().startOf('day'))) {
+        this.set('currentDate', this.get('moment').moment());
+      }
     },
 
     calendarBack() {
-      this.set('currentDate', this.get('moment').moment(this.get('currentDate').subtract(1, 'days')));
+      if (this.get('currentDate').isAfter(this.get('moment').moment())) {
+        this.set('currentDate', this.get('moment').moment(this.get('currentDate').subtract(1, 'days')));
+      }
     },
 
     calendarForward() {

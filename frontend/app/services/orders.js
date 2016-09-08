@@ -19,5 +19,17 @@ export default Ember.Service.extend({
         }).then(part => resolve(part), e => reject(e));
       });
     });
+  },
+
+  moveUpInRouteList(order) {
+    //TODO: implement me
+    console.log("UP " + order);
+    return Ember.RSVP.Promise.resolve();
+  },
+
+  moveDownInRouteList(order) {
+    //TODO: implement me
+    console.log("DOWN " + order);
+    return Ember.RSVP.Promise.resolve();
   }
 });
