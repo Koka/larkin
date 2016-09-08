@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'orders', to: 'orders#index'
   get 'orders/:id', to: 'orders#show'
   put 'orders/:id', to: 'orders#update'
+  put 'orders/:id/schedule', to: 'orders#schedule'
   post 'orders', to: 'orders#upload'
   post 'orders/:id/split', to: 'orders#split'
 

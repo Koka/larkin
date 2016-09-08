@@ -11,7 +11,7 @@ export default Ember.Route.extend({
     this._super.apply(this, arguments);
     controller.set('currentDate', this.get('moment').moment());
 
-    this.store.query('Order', { completed: true, outdated: false, cancelled: false }).then(orders => {
+    this.store.query('Order', { pending: true, cancelled: false }).then(orders => {
       controller.get('pendingOrders').clear();
       controller.get('pendingOrders').addObjects(orders);
     });

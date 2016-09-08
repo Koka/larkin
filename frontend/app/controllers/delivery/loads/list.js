@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  orders: Ember.inject.service(),
   moment: Ember.inject.service(),
   currentDate : null,
   availableOrders : Ember.A([]),
@@ -69,7 +70,7 @@ export default Ember.Controller.extend({
       this.set('scheduleTruckRemainingReturnVolume', remainingReturnVolume);
       this.get('availableOrders').clear();
 
-      this.store.query('Order', { outdated: false, completed: false, cancelled: false }).then(orders => {
+      this.store.query('Order', { completed: false, cancelled: false }).then(orders => {
         this.get('availableOrders').clear();
         this.get('availableOrders').addObjects(
           orders
@@ -85,10 +86,7 @@ export default Ember.Controller.extend({
     },
 
     unscheduleOrder(date, truck, shift, order) {
-      order.set('loadTruck', null);
-      order.set('loadDate', null);
-      order.set('loadShift', null);
-      order.save().then(() => {
+      this.get('orders').unscheduleOrder(order).then(() => {
         let pending = this.get('pendingOrders');
         let available = this.get('availableOrders');
         pending.removeObject(order);
@@ -100,10 +98,9 @@ export default Ember.Controller.extend({
       let pending = this.get('pendingOrders');
       let available = this.get('availableOrders');
       let promises = this.get('scheduleOrders').map(order => {
-        order.set('loadTruck', this.get('scheduleTruck'));
-        order.set('loadDate', this.get('scheduleDate').toDate());
-        order.set('loadShift', this.get('scheduleShift'));
-        return order.save().then(() => {
+        let promise = this.get('orders').scheduleOrder(this.get('scheduleDate').toDate(), this.get('scheduleTruck'), this.get('scheduleShift'), order);
+        return promise.then(() => {
+          order.reload();
           pending.addObject(order);
           available.removeObject(order);
         });

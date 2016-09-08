@@ -16,6 +16,9 @@ class OrdersController < ApplicationController
     query = query.where(load_truck_id: nil) if (params[:completed] == 'false')
     query = query.where.not(load_truck_id: nil) if (params[:completed] == 'true')
 
+    query = query.where("load_date >= current_date") if (params[:pending] == 'true')
+    query = query.where("load_date IS NULL OR load_date < current_date") if (params[:pending] == 'false')
+
     query = query.where("parsed_delivery_date >= current_date") if (params[:outdated] == 'false')
     query = query.where("parsed_delivery_date IS NULL OR parsed_delivery_date < current_date") if (params[:outdated] == 'true')
 
@@ -24,6 +27,34 @@ class OrdersController < ApplicationController
 
   def show
     render json: Order.find_by(id: params[:id])
+  end
+
+  def schedule
+    order = Order.find params[:id]
+
+    result = ActiveRecord::Base.connection_pool.with_connection do |con|
+      con.exec_query("
+	       select max(coalesce(load_ordinal, 0)) + 1 as new_ordinal
+          from orders
+          where (load_truck_id, load_shift, load_date) = ($1, $2, $3)
+        ",
+        'Select new order load ordinal',
+        [
+          bind_value('truck', :integer, params[:truck]),
+          bind_value('shift', :string, params[:shift]),
+          bind_value('date', :date, Date.parse(params[:date]))
+        ]
+      )
+    end
+
+    new_ordinal = result[0] && result[0]["new_ordinal"] ? result[0]["new_ordinal"] : 0
+
+    order.update_attributes!({
+      load_truck: Truck.find(params[:truck]),
+      load_date: Date.parse(params[:date]),
+      load_shift: params[:shift],
+      load_ordinal: new_ordinal
+    })
   end
 
   def update
