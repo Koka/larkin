@@ -27,6 +27,7 @@ export default Ember.Controller.extend({
             this._reloadCampaigns();
           }, error => {
             //TODO: Handle failure
+            console.log(error);
           });
         });
       }

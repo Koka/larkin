@@ -12,7 +12,8 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       },
       EXTEND_PROTOTYPES: {
-        Date: false
+        Date: false,
+        Function: true
       }
     },
 

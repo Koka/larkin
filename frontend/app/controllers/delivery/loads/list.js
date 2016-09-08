@@ -16,28 +16,6 @@ export default Ember.Controller.extend({
     this.get('availableOrders').clear();
   },
 
-  scheduleOrders: Ember.computed('availableOrders.@each.selected', function () {
-    return this.get('availableOrders') ? this.get('availableOrders').filterBy('selected', true).map(wrapper => wrapper.get('order')) :  Ember.A([]);
-  }),
-
-  scheduleSumVolume: Ember.computed('scheduleOrders.@each.volume', 'scheduleOrders.@each.type', function () {
-    return this.get('scheduleOrders') ? Ember.A(this.get('scheduleOrders')).filterBy('type', 'Delivery').reduce((acc, i) => acc + parseFloat(i.get('volume')), 0) : 0;
-  }),
-
-  scheduleSumReturnVolume: Ember.computed('scheduleOrders.@each.volume', 'scheduleOrders.@each.type', function () {
-    return this.get('scheduleOrders') ? Ember.A(this.get('scheduleOrders')).filterBy('type', 'Return').reduce((acc, i) => acc + parseFloat(i.get('volume')), 0) : 0;
-  }),
-
-  scheduleRemainingVolume: Ember.computed('scheduleSumVolume', 'scheduleTruckRemainingVolume', function() {
-    var remaining = this.get("scheduleTruckRemainingVolume") - this.get("scheduleSumVolume");
-    return remaining >= 0 ? remaining : 0;
-  }),
-
-  scheduleRemainingReturnVolume: Ember.computed('scheduleSumReturnVolume', 'scheduleTruckRemainingVolume', function() {
-    var remaining = this.get("scheduleTruckRemainingReturnVolume") - this.get("scheduleSumReturnVolume");
-    return remaining >= 0 ? remaining : 0;
-  }),
-
   calendarCanGoBack: Ember.computed('currentDate', function () {
     return this.get('currentDate').isSameOrAfter(this.get('moment').moment());
   }),
@@ -94,17 +72,20 @@ export default Ember.Controller.extend({
       });
     },
 
-    doSchedule() {
+    doSchedule(scheduleOrders) {
       let pending = this.get('pendingOrders');
       let available = this.get('availableOrders');
-      let promises = this.get('scheduleOrders').map(order => {
-        let promise = this.get('orders').scheduleOrder(this.get('scheduleDate').toDate(), this.get('scheduleTruck'), this.get('scheduleShift'), order);
+
+      let promise = this.get('orders').scheduleOrders(this.get('scheduleDate').toDate(), this.get('scheduleTruck'), this.get('scheduleShift'), scheduleOrders);
+
+      let promises = scheduleOrders.map(order => {
         return promise.then(() => {
           order.reload();
           pending.addObject(order);
           available.removeObject(order);
         });
       });
+
       Ember.RSVP.all(promises).then(() => {
         this._clearScheduleDialog();
       });

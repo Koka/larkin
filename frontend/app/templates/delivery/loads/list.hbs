@@ -34,85 +34,12 @@
   {{/each}}
 </div>
 
-{{#ui-modal name="schedule" class="fullscreen schedule" onApprove=(action 'doSchedule') onDeny=(action 'cancelSchedule')}}
-  <i class="close icon"></i>
-  <div class="header">
-    Schedule orders for load on {{#if scheduleDate}}{{moment-format scheduleDate 'MM/DD/YYYY'}}{{/if}} (shift: {{scheduleShift}}, truck: {{scheduleTruck.name}})
-  </div>
-  <div class="image content">
-    <div class="image">
-      <i class="cubes icon"></i>
-    </div>
-    <div class="description full-width">
-      <p>Please, select orders to be scheduled below:</p>
-      <table class="ui very basic compact {{if model.length 'selectable'}} celled table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Date</th>
-            <th>Shift</th>
-            <th>Purchase order</th>
-            <th>Type</th>
-            <th>Client name</th>
-            <th>Phone number</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each availableOrders as |order|}}
-            <tr class="{{unless order.order.isValid 'error'}} {{if (eq order.order.type 'Return') 'warning'}} {{if order.selected 'positive'}} {{if (or (not order.order.isValid) (and (eq order.order.type 'Delivery') (gt order.order.volume scheduleRemainingVolume)) (and (eq order.order.type 'Return') (gt order.order.volume scheduleRemainingReturnVolume))) 'disabled'}}">
-              <td>{{input type="checkbox" checked=order.selected}}</td>
-              <td>{{order.order.deliveryDate}}</td>
-              <td>
-                {{#if order.order.deliveryShift}}
-                  {{#unless order.selected}}
-                    <i class="attention icon"></i>
-                  {{else}}
-                    <i class="checkmark icon"></i>
-                  {{/unless}}
-                {{/if}}
-                {{order.order.deliveryShift}}
-              </td>
-              <td>{{order.order.purchaseOrderNumber}}</td>
-              <td>{{order.order.type}}</td>
-              <td>
-                {{#if (eq order.order.type 'Return')}}
-                  {{order.order.originName}}
-                {{else}}
-                  {{order.order.clientName}}
-                {{/if}}
-              </td>
-              <td>{{order.order.phoneNumber}}</td>
-              <td>
-                {{format-number order.order.handlingUnitQuantity format="0.00"}}
-                {{order.order.handlingUnitType}} / {{order.order.volume}} ft<sup>3</sup>
-              </td>
-            </tr>
-          {{else}}
-            <tr><td colspan="8" class="empty-table-message">No orders available for loading!</td></tr>
-          {{/each}}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="8">
-              <h3>
-                Remaining volume (+ return): {{format-number scheduleRemainingVolume format="0.00"}}
-                (+ {{format-number scheduleRemainingReturnVolume format="0.00"}}) ft<sup>3</sup>
-              </h3>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-  <div class="actions">
-      <div class="ui positive button {{if (eq scheduleOrders.length 0) 'disabled'}}">
-        <i class="shipping icon"></i>
-        Schedule orders
-      </div>
-      <div class="ui deny button">
-        <i class="cancel icon"></i>
-        Cancel
-      </div>
-  </div>
-{{/ui-modal}}
+{{schedule-dialog
+   orders=availableOrders
+   date=scheduleDate
+   truck=scheduleTruck
+   shift=scheduleShift
+   truckRemainingVolume=scheduleTruckRemainingVolume
+   truckRemainingReturnVolume=scheduleTruckRemainingReturnVolume
+   onSchedule=(action 'doSchedule')
+   onCancel=(action 'cancelSchedule')}}

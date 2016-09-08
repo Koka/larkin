@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-    {{#each orders as |order|}}
+    {{#each pagedOrders as |order|}}
       <tr class="{{if (eq order.type 'Return') 'warning'}} {{unless order.isValid 'error'}} {{if order.loadTruck 'positive'}}">
         <td>
           {{#if order.loadDate}}
@@ -60,9 +60,16 @@
         </td>
       </tr>
     {{else}}
-      <tr><td colspan="6" class="empty-table-message">No orders found!</td></tr>
+      <tr><td colspan="7" class="empty-table-message">No orders found!</td></tr>
     {{/each}}
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="7">
+        {{page-numbers content=pagedOrders}}
+      </td>
+    </tr>
+  </tfoot>
 </table>
 
 {{yield}}

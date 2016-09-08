@@ -16,7 +16,7 @@ export default Ember.Controller.extend({
     },
 
     splitOrder(order) {
-      this.get('orders').splitOrder(order).then(part => {
+      this.get('orders').splitOrder(order).then(() => {
         this.send("refreshMe");
       });
     }

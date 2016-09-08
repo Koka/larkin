@@ -4,15 +4,16 @@ export default Ember.Service.extend({
   session: Ember.inject.service(),
   moment: Ember.inject.service(),
 
-  scheduleOrder(date, truck, shift, order) {
+  scheduleOrders(date, truck, shift, orders) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       this.get('session').authorize('authorizer:custom', (header, value) => {
-        Ember.$.ajax(`/orders/${order.get('id')}/schedule`, {
-          method: 'PUT',
+        Ember.$.ajax(`/orders/schedule`, {
+          method: 'POST',
           data : {
             date: this.get('moment').moment(date).format('YYYY-MM-DD'),
             truck: truck.get('id'),
-            shift
+            shift,
+            orders: orders.mapBy("id")
           },
           headers : {
             [header] : value
@@ -47,7 +48,7 @@ export default Ember.Service.extend({
           headers : {
             [header] : value
           }
-        }).then(part => resolve(), e => reject(e));
+        }).then(() => resolve(), e => reject(e));
       });
     });
   },
