@@ -41,6 +41,11 @@
           {{#if order.loadTruck}}
             {{order.loadTruck.name}} ({{order.loadTruck.driver.name}})
           {{else}}
+            {{#if onSplit}}
+              <button class="ui icon button" {{action 'splitOrder' order}} title="Split order">
+                  <i class="cut icon"></i>
+              </button>
+            {{/if}}
             {{#if onEdit}}
               <button class="ui icon button" {{action 'editOrder' order}} title="Edit order">
                   <i class="edit icon"></i>

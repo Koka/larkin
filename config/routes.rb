@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'orders/:id', to: 'orders#show'
   put 'orders/:id', to: 'orders#update'
   post 'orders', to: 'orders#upload'
+  post 'orders/:id/split', to: 'orders#split'
 
   get 'trucks', to: 'trucks#index'
   get 'trucks/:id', to: 'trucks#show'

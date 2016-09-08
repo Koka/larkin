@@ -65,7 +65,7 @@ export default Ember.Controller.extend({
       this.set('scheduleTruckRemainingReturnVolume', remainingReturnVolume);
       this.get('availableOrders').clear();
 
-      this.store.query('Order', { outdated: false }).then(orders => {
+      this.store.query('Order', { outdated: false, completed: false, cancelled: false }).then(orders => {
         this.get('availableOrders').clear();
         this.get('availableOrders').addObjects(
           orders
@@ -86,18 +86,22 @@ export default Ember.Controller.extend({
       order.set('loadShift', null);
       order.save().then(() => {
         let pending = this.get('pendingOrders');
+        let available = this.get('availableOrders');
         pending.removeObject(order);
+        available.addObject(order);
       });
     },
 
     doSchedule() {
       let pending = this.get('pendingOrders');
+      let available = this.get('availableOrders');
       let promises = this.get('scheduleOrders').map(order => {
         order.set('loadTruck', this.get('scheduleTruck'));
         order.set('loadDate', this.get('scheduleDate').toDate());
         order.set('loadShift', this.get('scheduleShift'));
         return order.save().then(() => {
           pending.addObject(order);
+          available.removeObject(order);
         });
       });
       Ember.RSVP.all(promises).then(() => {

@@ -13,6 +13,15 @@ export default Ember.Controller.extend({
       this.get('orders').cancelOrder(order).then(() => {
         this.get('model').removeObject(order);
       });
+    },
+
+    splitOrder(order) {
+      this.get('orders').splitOrder(order).then(part => {
+        if (part) {
+          this.get('model').addObject(part);
+          order.reload();
+        }
+      });
     }
   }
 });

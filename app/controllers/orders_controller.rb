@@ -32,6 +32,24 @@ class OrdersController < ApplicationController
     render json: Order.find_by(id: params[:id])
   end
 
+  def split
+    Order.transaction do
+      order = Order.find(params[:id])
+      part = order.dup
+
+      qty = order.handling_unit_quantity.to_i
+      order.handling_unit_quantity = qty / 2
+      part.handling_unit_quantity = qty - qty / 2
+
+      vol = order.volume.to_f
+      order.volume = vol / 2
+      part.volume = vol - vol / 2
+
+      order.save
+      part.save
+    end
+  end
+
   def upload
     raise "expected text/csv file" unless params[:file].content_type == "text/csv"
 
