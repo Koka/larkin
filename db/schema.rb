@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907134722) do
+ActiveRecord::Schema.define(version: 20160908070624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,10 +42,12 @@ ActiveRecord::Schema.define(version: 20160907134722) do
     t.integer  "load_truck_id"
     t.string   "load_shift"
     t.boolean  "cancelled"
-    t.index ["delivery_date"], name: "index_orders_on_delivery_date", using: :btree
+    t.date     "parsed_delivery_date"
+    t.index ["cancelled"], name: "index_orders_on_cancelled", using: :btree
     t.index ["load_date"], name: "index_orders_on_load_date", using: :btree
     t.index ["load_shift"], name: "index_orders_on_load_shift", using: :btree
     t.index ["load_truck_id"], name: "index_orders_on_load_truck_id", using: :btree
+    t.index ["parsed_delivery_date"], name: "index_orders_on_parsed_delivery_date", using: :btree
   end
 
   create_table "trucks", force: :cascade do |t|
@@ -55,7 +57,7 @@ ActiveRecord::Schema.define(version: 20160907134722) do
     t.integer  "driver_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["driver_id"], name: "index_trucks_on_driver_id", using: :btree
+    t.index ["driver_id"], name: "index_trucks_on_driver_id", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|

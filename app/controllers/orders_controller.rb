@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
 
   def index
     query = Order.order(
-      "coalesce(load_date, to_date(delivery_date, 'MM/DD/YYYY')) DESC",
+      "coalesce(load_date, parsed_delivery_date) DESC",
       "(case coalesce(load_shift, delivery_shift) when 'M' then 0 when 'N' then 1 when 'E' then 2 else -1 end) DESC",
       :client_name
     )
@@ -16,8 +16,8 @@ class OrdersController < ApplicationController
     query = query.where(load_truck_id: nil) if (params[:completed] == 'false')
     query = query.where.not(load_truck_id: nil) if (params[:completed] == 'true')
 
-    query = query.where("to_date(delivery_date, 'MM/DD/YYYY') >= current_date") if (params[:outdated] == 'false')
-    query = query.where.not("to_date(delivery_date, 'MM/DD/YYYY') >= current_date") if (params[:outdated] == 'true')
+    query = query.where("parsed_delivery_date >= current_date") if (params[:outdated] == 'false')
+    query = query.where("parsed_delivery_date IS NULL OR parsed_delivery_date < current_date") if (params[:outdated] == 'true')
 
     render json: query
   end
