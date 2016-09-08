@@ -5,80 +5,118 @@
     <form class="ui form">
         <div class="field">
             <label>Delivery date</label>
-            {{input type="text" value=model.deliveryDate placeholder='Delivery date'}}
+            {{#validation-wrap name="Delivery date" model=model field='deliveryDate'}}
+              {{input type="text" value=model.deliveryDate placeholder='Delivery date'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Delivery shift</label>
-            {{input type="text" value=model.deliveryShift placeholder='Delivery shift'}}
+            {{#validation-wrap name="Delivery shift" model=model field='deliveryShift'}}
+              {{input type="text" value=model.deliveryShift placeholder='Delivery shift'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Origin name</label>
-            {{input type="text" value=model.originName placeholder='Origin name'}}
+            {{#validation-wrap name="Origin name" model=model field='originName'}}
+              {{input type="text" value=model.originName placeholder='Origin name'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Origin address</label>
-            {{input type="text" value=model.originAddress placeholder='Origin address'}}
+            {{#validation-wrap name="Origin address" model=model field='originAddress'}}
+              {{input type="text" value=model.originAddress placeholder='Origin address'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Origin city</label>
-            {{input type="text" value=model.originCity placeholder='Origin city'}}
+            {{#validation-wrap name="Origin city" model=model field='originCity'}}
+              {{input type="text" value=model.originCity placeholder='Origin city'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Origin state</label>
-            {{input type="text" value=model.originState placeholder='Origin state'}}
+            {{#validation-wrap name="Origin state" model=model field='originState'}}
+              {{input type="text" value=model.originState placeholder='Origin state'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Origin ZIP</label>
-            {{input type="text" value=model.originZip placeholder='Origin ZIP'}}
+            {{#validation-wrap name="Origin ZIP" model=model field='originZip'}}
+              {{input type="text" value=model.originZip placeholder='Origin ZIP'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Origin country</label>
-            {{input type="text" value=model.originCountry placeholder='Origin country'}}
+            {{#validation-wrap name="Origin country" model=model field='originCountry'}}
+              {{input type="text" value=model.originCountry placeholder='Origin country'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Client name</label>
-            {{input type="text" value=model.clientName placeholder='Client name'}}
+            {{#validation-wrap name="Client name" model=model field='clientName'}}
+              {{input type="text" value=model.clientName placeholder='Client name'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Destination address</label>
-            {{input type="text" value=model.destinationAddress placeholder='Destination address'}}
+            {{#validation-wrap name="Destination address" model=model field='destinationAddress'}}
+              {{input type="text" value=model.destinationAddress placeholder='Destination address'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Destination city</label>
-            {{input type="text" value=model.destinationCity placeholder='Destination city'}}
+            {{#validation-wrap name="Destination city" model=model field='destinationCity'}}
+              {{input type="text" value=model.destinationCity placeholder='Destination city'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Destination state</label>
-            {{input type="text" value=model.destinationState placeholder='Destination state'}}
+            {{#validation-wrap name="Destination state" model=model field='destinationState'}}
+              {{input type="text" value=model.destinationState placeholder='Destination state'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Destination ZIP</label>
-            {{input type="text" value=model.destinationZip placeholder='Destination ZIP'}}
+            {{#validation-wrap name="Destination ZIP" model=model field='destinationZip'}}
+              {{input type="text" value=model.destinationZip placeholder='Destination ZIP'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Destination country</label>
-            {{input type="text" value=model.destinationCountry placeholder='Destination country'}}
+            {{#validation-wrap name="Destination country" model=model field='destinationCountry'}}
+              {{input type="text" value=model.destinationCountry placeholder='Destination country'}}
+            {{/validation-wrap}}
         </div>
 
         <div class="field">
             <label>Phone number</label>
-            {{input type="text" value=model.phoneNumber placeholder='Phone number'}}
+            {{#validation-wrap name="Phone number" model=model field='phoneNumber'}}
+              {{input type="text" value=model.phoneNumber placeholder='Phone number'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Purchase order number</label>
-            {{input type="text" value=model.purchaseOrderNumber placeholder='Purchase order number'}}
+            {{#validation-wrap name="Purchase order number" model=model field='purchaseOrderNumber'}}
+              {{input type="text" value=model.purchaseOrderNumber placeholder='Purchase order number'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Volume</label>
-            {{input type="text" value=model.volume placeholder='Volume'}}
+            {{#validation-wrap name="Volume" model=model field='volume'}}
+              {{input type="text" value=model.volume placeholder='Volume'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Handling unit quantity</label>
-            {{input type="text" value=model.handlingUnitQuantity placeholder='Handling unit quantity'}}
+            {{#validation-wrap name="Handling unit quantity" model=model field='handlingUnitQuantity'}}
+              {{input type="text" value=model.handlingUnitQuantity placeholder='Handling unit quantity'}}
+            {{/validation-wrap}}
         </div>
         <div class="field">
             <label>Handling unit type</label>
-            {{input type="text" value=model.handlingUnitType placeholder='Handling unit type'}}
+            {{#validation-wrap name="Handling unit type" model=model field='handlingUnitType'}}
+              {{input type="text" value=model.handlingUnitType placeholder='Handling unit type'}}
+            {{/validation-wrap}}
         </div>
     </form>
 </div>

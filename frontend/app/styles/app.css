@@ -56,3 +56,16 @@ body > .ember-view {
 .ui.modal > .content > div.description.full-width {
   width: 100%;
 }
+
+.ui.input.error input {
+    background-color: #FFF6F6;
+    border-color: #E0B4B4;
+    color: #9F3A38;
+    box-shadow: none;
+}
+
+.ui.label.error-label {
+  position: absolute;
+  left: 30%;
+  top: 32px;
+}

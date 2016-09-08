@@ -1,0 +1,10 @@
+<div class="ui input {{if (get model.errors field) 'error'}}">
+  {{yield}}
+  {{#if (get model.errors field)}}
+    <div class="ui red up pointing label error-label">
+      {{#each (get model.errors field) as |error|}}
+        {{name}} {{error.message}}
+      {{/each}}
+    </div>
+  {{/if}}
+</div>
