@@ -24,11 +24,18 @@
   </div>
   <div class="image content">
     <div class="image">
-      <i class="shop icon"></i>
+      <i class="shipping icon"></i>
     </div>
-    <div class="description">
-      <p>Please, select your orders CSV file using control below:</p>
+    <div class="full-width description">
+      <div class="ui warning message">
+        <div class="header">
+          Please, be careful!
+        </div>
+        <p>If your CSV contains old, malformed or duplicate orders they will be uploaded AS IS without any modification.</p>
+        <p>If you've accidentally uploaded something wrong, you could fix it later by editing and cancelling wrong orders.</p>
+      </div>
       <form>
+        <p>Select your orders CSV file using control below:</p>
         {{file-upload files=orderFiles}}
       </form>
     </div>
