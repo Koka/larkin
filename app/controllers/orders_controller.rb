@@ -109,8 +109,9 @@ class OrdersController < ApplicationController
     end
 
     target = result[0] && result[0]["target_id"] ? result[0]["target_id"] : nil
+
     if target then
-      swap_orders_load_ordinals(params[:id], target)
+      swap_orders_load_ordinals(target, params[:id])
     end
   end
 
