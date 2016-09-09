@@ -10,6 +10,10 @@ class User < ApplicationRecord
     self.find_by login: login
   end
 
+  def self.from_token_payload payload
+    self.find payload['sub']
+  end
+
   def role
     Truck.find_by(driver_id: self.id) ? :driver : :dispatcher
   end

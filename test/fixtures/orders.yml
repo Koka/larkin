@@ -4,14 +4,13 @@ one:
   delivery_date: MyString
   delivery_shift: MyString
   origin_name: MyString
-  origin_raw_line_1: MyString
+  origin_address: MyString
   origin_city: MyString
   origin_state: MyString
   origin_zip: MyString
   origin_country: MyString
-  client: MyString
-  name: MyString
-  destination_raw_line_1: MyString
+  client_name: MyString
+  destination_address: MyString
   destination_city: MyString
   destination_state: MyString
   destination_zip: MyString
@@ -27,14 +26,13 @@ two:
   delivery_date: MyString
   delivery_shift: MyString
   origin_name: MyString
-  origin_raw_line_1: MyString
+  origin_address: MyString
   origin_city: MyString
   origin_state: MyString
   origin_zip: MyString
   origin_country: MyString
-  client: MyString
-  name: MyString
-  destination_raw_line_1: MyString
+  client_name: MyString
+  destination_address: MyString
   destination_city: MyString
   destination_state: MyString
   destination_zip: MyString

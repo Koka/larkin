@@ -1,15 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  trips_per_day: 1
-  max_weight: 1
-  max_volume: 1
+  name: Truck 1
+  max_weight: 10
+  max_volume: 10
   driver: one
 
 two:
-  name: MyString
-  trips_per_day: 1
-  max_weight: 1
-  max_volume: 1
+  name: Truck 2
+  max_weight: 10
+  max_volume: 10
   driver: two
