@@ -1,24 +1,33 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+
+const ordersServiceStub = Ember.Service.extend({
+  isShiftAvailable() {
+    return true;
+  }
+});
 
 moduleForComponent('load-plan', 'Integration | Component | load plan', {
-  integration: true
+  integration: true,
+
+  beforeEach() {
+    this.register('service:orders', ordersServiceStub);
+    this.inject.service('orders', { as: 'ordersServiceStub'});
+  }
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  const store = this.container.lookup('service:store');
+  Ember.run(() => {
+    this.set('truck', store.createRecord('truck'));
+  });
 
-  this.render(hbs`{{load-plan}}`);
+  this.render(hbs`{{load-plan truck=truck}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  Ember.run(() => {
+    this.get('truck').destroy();
+  });
 
-  // Template block usage:
-  this.render(hbs`
-    {{#load-plan}}
-      template block text
-    {{/load-plan}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim(), 'Shift is not available');
 });

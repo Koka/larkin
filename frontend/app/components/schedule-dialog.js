@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   pagedOrders: pagedArray('orders'),
 
   scheduleOrders: Ember.computed('orders.@each.selected', function () {
-    return this.get('orders') ? this.get('orders').filterBy('selected', true).map(wrapper => wrapper.get('order')) :  Ember.A([]);
+    return this.get('orders') ? Ember.A(this.get('orders')).filterBy('selected', true).map(wrapper => wrapper.get('order')) :  Ember.A([]);
   }),
 
   scheduleSumVolume: Ember.computed('scheduleOrders.@each.volume', 'scheduleOrders.@each.type', function () {

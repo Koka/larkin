@@ -9,16 +9,10 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{order-list}}`);
+  this.set('orders', []);
 
-  assert.equal(this.$().text().trim(), '');
+  this.render(hbs`{{order-list orders=orders}}`);
 
-  // Template block usage:
-  this.render(hbs`
-    {{#order-list}}
-      template block text
-    {{/order-list}}
-  `);
+  assert.ok(this.$().text().trim().indexOf('No orders found!') > 0);
 
-  assert.equal(this.$().text().trim(), 'template block text');
 });

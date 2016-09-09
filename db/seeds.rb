@@ -14,5 +14,5 @@ d1 ||= User.create(name: "Mark Shopengauer", login: "driver1", password: "driver
 d2 = User.find_by(login: 'driver2')
 d2 ||= User.create(name: "Ali Lichtensmidt", login: "driver2", password: "driver2")
 
-Truck.create(name: "Truck 1", trips_per_day: 2, max_weight: 10000, max_volume: 1400, driver_id: d1.id)
-Truck.create(name: "Truck 2", trips_per_day: 1, max_weight: 10000, max_volume: 1400, driver_id: d2.id)
+Truck.create(name: "Truck 1", max_weight: 10000, max_volume: 1400, driver_id: d1.id)
+Truck.create(name: "Truck 2", max_weight: 10000, max_volume: 1400, driver_id: d2.id)

@@ -6,19 +6,10 @@ moduleForComponent('schedule-dialog', 'Integration | Component | schedule dialog
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  this.set('orders', []);
 
-  this.render(hbs`{{schedule-dialog}}`);
+  this.render(hbs`{{schedule-dialog orders=orders}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.ok(this.$().text().indexOf('No orders available for loading!') > 0);
 
-  // Template block usage:
-  this.render(hbs`
-    {{#schedule-dialog}}
-      template block text
-    {{/schedule-dialog}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });
