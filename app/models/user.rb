@@ -10,4 +10,7 @@ class User < ApplicationRecord
     self.find_by login: login
   end
 
+  def role
+    Truck.find_by(driver_id: self.id) ? :driver : :dispatcher
+  end
 end

@@ -4,9 +4,15 @@
       <h4>Larkin LLC Delivery</h4>
     </div>
 
-    {{#link-to 'delivery.orders' class="blue item"}}<h4>Orders</h4>{{/link-to}}
-    {{#link-to 'delivery.loads' class="green item"}}<h4>Loads</h4>{{/link-to}}
-    {{#link-to 'delivery.routelists' class="brown item"}}<h4>Route lists</h4>{{/link-to}}
+    {{#if (can "see list of orders")}}
+      {{#link-to 'delivery.orders' class="blue item"}}<h4>Orders</h4>{{/link-to}}
+    {{/if}}
+    {{#if (can "see list of loads")}}
+      {{#link-to 'delivery.loads' class="green item"}}<h4>Loads</h4>{{/link-to}}
+    {{/if}}
+    {{#if (can "see list of routelists")}}
+      {{#link-to 'delivery.routelists' class="brown item"}}<h4>Route lists</h4>{{/link-to}}
+    {{/if}}
 
     <div class="right stacked menu">
       <div class="item">

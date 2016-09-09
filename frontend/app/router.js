@@ -23,6 +23,7 @@ Router.map(function() {
       this.route('edit', { path: ':id'});
     });
   });
+  this.route('unauthorized');
 });
 
 export default Router;

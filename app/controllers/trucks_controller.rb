@@ -2,14 +2,21 @@ class TrucksController < ApplicationController
   before_action :authenticate_user
 
   def index
-    render json: Truck.order(:id).all
+    my_id = get_my_truck_id()
+    render json: my_id ? Truck.order(:id).where(id: my_id) : Truck.order(:id).all
   end
 
   def show
+    my_id = get_my_truck_id()
+    raise 'Invalid truck id' unless my_id == nil || params[:id].to_i == my_id
+
     render json: Truck.find_by(id: params[:id])
   end
 
   def shifts
+    my_id = get_my_truck_id()
+    raise 'Invalid truck id' unless my_id == nil || params[:id].to_i == my_id
+    
     result = ActiveRecord::Base.connection_pool.with_connection do |con|
       con.exec_query("
           select shift_count FROM (

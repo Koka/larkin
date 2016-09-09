@@ -1,7 +1,7 @@
 require 'csv'
 
 class OrdersController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :dispatcher_only
 
   def index
     query = Order.order(
@@ -174,7 +174,6 @@ class OrdersController < ApplicationController
   end
 
   private
-
     def swap_orders_load_ordinals(id1, id2)
       o1 = Order.find id1
       o2 = Order.find id2

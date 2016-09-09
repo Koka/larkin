@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   mount_ember_app :frontend, to: "/app"
 
   get 'users/me', to: 'current_user#index'
-  get 'users', to: 'users#index'
   get 'users/:id', to: 'users#show'
 
   get 'orders', to: 'orders#index'

@@ -2,6 +2,20 @@ body > .ember-view {
   height : 100%;
 }
 
+.unauthorized {
+  height : 100%;
+  background-color: #EAEAEA;
+}
+
+.unauthorized .ui.grid {
+  height : 100%;
+  margin: 0;
+}
+
+.unauthorized .column {
+  max-width: 800px;
+}
+
 .login {
   height : 100%;
   background-color: #EAEAEA;

@@ -22,9 +22,15 @@
           <button class="ui icon button" title="Download PDF version" {{action 'downloadPDF' routelist}}>
               <i class="file pdf outline icon"></i>
           </button>
-          <button class="ui icon button" title="Edit stop order" {{action 'editRoutelist' routelist}}>
-              <i class="edit icon"></i>
-          </button>
+          {{#if (can "edit stops in routelists")}}
+            <button class="ui icon button" title="Edit stop order" {{action 'editRoutelist' routelist}}>
+                <i class="edit icon"></i>
+            </button>
+          {{else}}
+            <button class="ui icon button" title="View stop order" {{action 'editRoutelist' routelist}}>
+                <i class="unhide icon"></i>
+            </button>
+          {{/if}}
         </td>
       </tr>
     {{else}}

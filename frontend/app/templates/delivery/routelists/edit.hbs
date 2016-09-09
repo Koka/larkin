@@ -5,8 +5,10 @@
   <li>Larkin LLC (loading for delivery)</li>
   {{#each model.stops as |order idx|}}
     <li>
-      <i class="arrow down icon force-pointer {{if (eq idx lastStop) 'disabled'}}" title="Move down" {{action "moveDown" order (eq idx lastStop)}}></i>
-      <i class="arrow up icon force-pointer {{if (eq idx 0) 'disabled'}}" title="Move up" {{action "moveUp" order (eq idx 0)}}></i>
+      {{#if (can "edit stops in routelists")}}
+        <i class="arrow down icon force-pointer {{if (eq idx lastStop) 'disabled'}}" title="Move down" {{action "moveDown" order (eq idx lastStop)}}></i>
+        <i class="arrow up icon force-pointer {{if (eq idx 0) 'disabled'}}" title="Move up" {{action "moveUp" order (eq idx 0)}}></i>
+      {{/if}}
       Order {{order.purchaseOrderNumber}};
       {{#if (eq order.type 'Return')}}
         {{order.originCountry}}, {{order.originZip}} {{order.originCity}} {{order.originState}}, {{order.originAddress}},

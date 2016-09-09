@@ -10,10 +10,13 @@ class RoutelistsController < ApplicationController
         'count(distinct id) + 2 as stop_count,'\
         'load_truck_id as truck_id '\
         'from orders '\
-        'where load_date >= current_date AND load_truck_id is not null '\
+        'where load_date >= current_date AND load_truck_id is not null AND load_truck_id = coalesce($1, load_truck_id) '\
         'group by load_date, load_shift, load_truck_id '\
         "order by load_date ASC, (case load_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end) ASC, load_truck_id",
-        'Load route lists'
+        'Load route lists',
+        [
+          bind_value('truck', :integer, get_my_truck_id())
+        ]
       )
     end
     render json: {routelists: list}
@@ -21,6 +24,9 @@ class RoutelistsController < ApplicationController
 
   def show
     id = parse_id
+    my_id = get_my_truck_id()
+
+    raise 'Invalid truck id' unless my_id == nil || id[:truck].to_i == my_id
 
     list = ActiveRecord::Base.connection_pool.with_connection do |con|
       con.exec_query(

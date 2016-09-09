@@ -1,0 +1,12 @@
+<div class="unauthorized">
+  <div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <div class="ui negative message">
+          <div class="header">You are not authorized to see this content</div>
+          <p>Please, contact your system administrator to request access rights.</p>
+          {{#link-to 'index'}}Go to application{{/link-to}}
+          {{outlet}}
+        </div>
+    </div>
+  </div>
+</div>
