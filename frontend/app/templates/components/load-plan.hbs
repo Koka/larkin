@@ -10,16 +10,17 @@
         <span>
           Order {{order.purchaseOrderNumber}}
           {{#if (eq order.type 'Return')}}(returned){{/if}}
-          [
-          {{format-number order.handlingUnitQuantity format="0.00"}}
-          {{order.handlingUnitType}} / {{format-number order.volume format="0.00"}} ft<sup>3</sup>
-          ]
+          [&nbsp;{{format-number order.handlingUnitQuantity format="0.00"}}&nbsp;{{order.handlingUnitType}}
+           /
+          {{format-number order.volume format="0.00"}}&nbsp;ft<sup>3</sup>&nbsp;]
         </span>
       </div>
     {{/each}}
   </div>
   <div class="ui label load-plan-force-bottom">
-    <i class="cube icon"></i>Volume (+ returned): {{format-number sumVolume format="0.00"}} (+ {{format-number sumReturnedVolume format="0.00"}}) / {{truck.maxVolume}} ft<sup>3</sup>
+    <i class="cube icon"></i>Volume (+&nbsp;returned): {{format-number sumVolume format="0.00"}} (+&nbsp;{{format-number sumReturnedVolume format="0.00"}})
+     /
+    {{truck.maxVolume}}&nbsp;ft<sup>3</sup>
   </div>
 {{else}}
   <h3 class="load-plan-not-available">Shift is not available</h3>
