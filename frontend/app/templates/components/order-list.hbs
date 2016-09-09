@@ -42,9 +42,11 @@
             {{order.loadTruck.name}} ({{order.loadTruck.driver.name}})
           {{else}}
             {{#if onSplit}}
-              <button class="ui icon button {{if (lt order.handlingUnitQuantity 2) 'disabled'}}" {{action 'splitOrder' order}} title="Split order">
-                  <i class="cut icon"></i>
-              </button>
+              {{#confirm-wrap message="Are you sure?" onConfirm=(action 'splitOrder' order)}}
+                <button class="ui icon button {{if (lt order.handlingUnitQuantity 2) 'disabled'}}" title="Split order">
+                    <i class="cut icon"></i>
+                </button>
+              {{/confirm-wrap}}
             {{/if}}
             {{#if onEdit}}
               <button class="ui icon button" {{action 'editOrder' order}} title="Edit order">
@@ -52,9 +54,11 @@
               </button>
             {{/if}}
             {{#if onCancel}}
-            <button class="ui icon button" {{action 'cancelOrder' order}} title="Cancel order">
-                <i class="cancel icon"></i>
-            </button>
+              {{#confirm-wrap message="Are you sure?" onConfirm=(action 'cancelOrder' order)}}
+                <button class="ui icon button" title="Cancel order">
+                    <i class="cancel icon"></i>
+                </button>
+              {{/confirm-wrap}}
             {{/if}}
           {{/if}}
         </td>

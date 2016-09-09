@@ -1,0 +1,17 @@
+{{#if confirming}}
+    <div class='confirm-wrap'>
+      {{#click-outside action=(action "cancel")}}
+        <div class="ui blue down pointing basic label confirm-label">
+          <h4>Are you sure?</h4>
+          <div>
+              <button class="ui mini positive button" {{action 'confirm'}}>Yes</button>
+              <button class="ui mini negative button" {{action 'cancel'}}>No</button>
+          </div>
+        </div>
+      {{/click-outside}}
+
+      {{yield}}
+    </div>
+{{else}}
+  <span {{action 'ask'}}>{{yield}}</span>
+{{/if}}
