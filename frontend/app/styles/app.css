@@ -45,7 +45,9 @@ body > .ember-view {
 }
 
 .ui.list.load-plan-list {
-  margin: 2em;
+  margin-top: 1.5em;
+  margin-left: 2em;
+  margin-bottom: 3em;
   min-height: 5em;
 }
 
@@ -113,4 +115,8 @@ body > .ember-view {
 
 .ui.table td.buttons-cell {
   text-align: center;
+}
+
+.ui.left {
+  float: inherit;
 }
