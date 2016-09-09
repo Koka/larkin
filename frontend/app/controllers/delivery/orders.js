@@ -6,6 +6,8 @@ export default Ember.Controller.extend({
 
   session: Ember.inject.service(),
 
+  notifications: Ember.inject.service('notification-messages'),
+
   actions : {
     openUploadDialog() {
       Ember.$('.ui.upload.modal').modal('show');
@@ -24,10 +26,9 @@ export default Ember.Controller.extend({
             }
           });
           uploader.upload(files[0]).then(() => {
-            this._reloadCampaigns();
-          }, error => {
-            //TODO: Handle failure
-            console.log(error);
+            this.get('notifications').success('Orders uploaded!');
+          }, () => {
+            this.get('notifications').error('Failed to upload orders.');
           });
         });
       }
