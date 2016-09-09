@@ -83,3 +83,8 @@ body > .ember-view {
   left: 30%;
   top: 32px;
 }
+
+.pagination-centered {
+  margin-top: 1em;
+  text-align: center;
+}

@@ -1,26 +1,28 @@
 {{#if (gt pageItems.length 1)}}
-  <div class="ui pagination menu">
-      {{#if canStepBackward}}
-        <a class="item" href="#" {{action "incrementPage" -1}}>&laquo;</a>
-      {{else}}
-        <a class="item disabled" href="#" {{action "incrementPage" -1}}>&laquo;</a>
-      {{/if}}
-
-      {{#each pageItems as |item|}}
-        {{#if item.dots}}
-          <span>...</span>
-        {{/if}}
-        {{#if item.current}}
-          <a class="item active">{{item.page}}</a>
+  <div class="pagination-centered">
+    <div class="ui pagination menu">
+        {{#if canStepBackward}}
+          <a class="item" href="#" {{action "incrementPage" -1}}>&laquo;</a>
         {{else}}
-          <a class="item" href="#" {{action "pageClicked" item.page}}>{{item.page}}</a>
+          <a class="item disabled" href="#" {{action "incrementPage" -1}}>&laquo;</a>
         {{/if}}
-      {{/each}}
 
-      {{#if canStepForward}}
-          <a class="item" href="#" {{action "incrementPage" 1}}>&raquo;</a>
-      {{else}}
-          <a class="item disabled" href="#" {{action "incrementPage" 1}}>&raquo;</a>
-      {{/if}}
+        {{#each pageItems as |item|}}
+          {{#if item.dots}}
+            <span>...</span>
+          {{/if}}
+          {{#if item.current}}
+            <a class="item active">{{item.page}}</a>
+          {{else}}
+            <a class="item" href="#" {{action "pageClicked" item.page}}>{{item.page}}</a>
+          {{/if}}
+        {{/each}}
+
+        {{#if canStepForward}}
+            <a class="item" href="#" {{action "incrementPage" 1}}>&raquo;</a>
+        {{else}}
+            <a class="item disabled" href="#" {{action "incrementPage" 1}}>&raquo;</a>
+        {{/if}}
+    </div>
   </div>
 {{/if}}
