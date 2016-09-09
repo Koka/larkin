@@ -88,3 +88,11 @@ body > .ember-view {
   margin-top: 1em;
   text-align: center;
 }
+
+.load-header {
+  max-width: 170px;
+}
+
+.ui.table td.buttons-cell {
+  text-align: center;
+}

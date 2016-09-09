@@ -37,7 +37,7 @@
           {{/if}}
         </td>
         <td>{{order.phoneNumber}}</td>
-        <td>
+        <td class="{{unless order.loadTruck 'buttons-cell'}}">
           {{#if order.loadTruck}}
             {{order.loadTruck.name}} ({{order.loadTruck.driver.name}})
           {{else}}
