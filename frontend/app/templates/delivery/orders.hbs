@@ -1,13 +1,13 @@
 <h3 class="noselect">
   <div class="ui tabular menu">
 
-    {{#link-to 'delivery.orders.list' class="item"}}Actual{{/link-to}}
-    {{#link-to 'delivery.orders.outdated' class="item"}}Outdated{{/link-to}}
-    {{#link-to 'delivery.orders.completed' class="item"}}Scheduled{{/link-to}}
-    {{#link-to 'delivery.orders.cancelled' class="item"}}Cancelled{{/link-to}}
+    {{#link-to 'delivery.orders.list' class="item nav-orders-actual"}}Actual{{/link-to}}
+    {{#link-to 'delivery.orders.outdated' class="item nav-orders-outdated"}}Outdated{{/link-to}}
+    {{#link-to 'delivery.orders.completed' class="item nav-orders-scheduled"}}Scheduled{{/link-to}}
+    {{#link-to 'delivery.orders.cancelled' class="item nav-orders-cancelled"}}Cancelled{{/link-to}}
 
     <div class="right menu">
-      <a class="item" {{action 'openUploadDialog'}}>
+      <a class="item button-orders-upload" {{action 'openUploadDialog'}}>
           <i class="upload icon"></i>Upload orders CSV
       </a>
     </div>

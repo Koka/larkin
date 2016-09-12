@@ -5,19 +5,19 @@
     </div>
 
     {{#if (can "see list of orders")}}
-      {{#link-to 'delivery.orders' class="blue item"}}<h4>Orders</h4>{{/link-to}}
+      {{#link-to 'delivery.orders' class="blue item nav-orders"}}<h4>Orders</h4>{{/link-to}}
     {{/if}}
     {{#if (can "see list of loads")}}
-      {{#link-to 'delivery.loads' class="green item"}}<h4>Loads</h4>{{/link-to}}
+      {{#link-to 'delivery.loads' class="green item nav-loads"}}<h4>Loads</h4>{{/link-to}}
     {{/if}}
     {{#if (can "see list of routelists")}}
-      {{#link-to 'delivery.routelists' class="brown item"}}<h4>Route lists</h4>{{/link-to}}
+      {{#link-to 'delivery.routelists' class="brown item nav-routelists"}}<h4>Route lists</h4>{{/link-to}}
     {{/if}}
 
     <div class="right stacked menu">
       <div class="item">
         <i class="user icon"></i>
-        {{currentUser.user.name}} &nbsp; (<a href="#" {{action 'logout'}}>Logout</a>)
+        {{currentUser.user.name}} &nbsp; (<a href="#" class="nav-logout" {{action 'logout'}}>Logout</a>)
       </div>
     </div>
   </nav>
