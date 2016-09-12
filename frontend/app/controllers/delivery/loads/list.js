@@ -13,6 +13,7 @@ export default Ember.Controller.extend({
     this.set('scheduleShift', null);
     this.set('scheduleTruckRemainingVolume', 0);
     this.set('scheduleTruckRemainingReturnVolume', 0);
+    this.set('scheduleLoading', false);
     this.get('availableOrders').clear();
   },
 
@@ -46,6 +47,7 @@ export default Ember.Controller.extend({
       this.set('scheduleShift', shift);
       this.set('scheduleTruckRemainingVolume', remainingVolume);
       this.set('scheduleTruckRemainingReturnVolume', remainingReturnVolume);
+      this.set('scheduleLoading', true);
       this.get('availableOrders').clear();
 
       this.store.query('Order', { completed: false, cancelled: false }).then(orders => {
@@ -58,6 +60,7 @@ export default Ember.Controller.extend({
               order: order
             }))
         );
+        this.set('scheduleLoading', false);
       });
 
       Ember.$('.ui.schedule.modal').modal('show');

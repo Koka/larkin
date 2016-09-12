@@ -64,7 +64,13 @@
         </td>
       </tr>
     {{else}}
-      <tr><td colspan="7" class="empty-table-message">No orders found!</td></tr>
+      <tr><td colspan="7" class="empty-table-message">
+        {{#if orders.isLoading}}
+          Loading... <i class="ui loading spinner icon"></i>
+        {{else}}
+          No orders found!
+        {{/if}}
+      </td></tr>
     {{/each}}
   </tbody>
   <tfoot>
