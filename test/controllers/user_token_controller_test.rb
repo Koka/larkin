@@ -26,19 +26,4 @@ class UserTokenControllerTest < ActionDispatch::IntegrationTest
     assert_response 404
   end
 
-  test "should get same token on repeating authorizations" do
-    preauthHeaders = authenticate(users(:one));
-
-    params = {
-      auth: {
-        login: "user1",
-        password: "password1"
-      }
-    }
-    post knock_auth_token_url, params: params.to_json, headers: {'Accept' => "application/json", 'Content-Type' => 'application/json'}
-    assert_response 201
-
-    token = JSON.parse(@response.body)
-    assert_equal(preauthHeaders['Authorization'], "Bearer #{token['jwt']}")
-  end
 end

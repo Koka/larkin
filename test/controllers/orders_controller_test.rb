@@ -123,8 +123,48 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should upload orders CSV" do
-    post orders_upload_url, headers: authenticate(users(:three))
-    #TODO: test me
+    file = File.join(ActionDispatch::IntegrationTest.fixture_path, 'files/test_orders.csv')
+    upload = fixture_file_upload(file, 'text/csv')
+    post orders_upload_url, params: { file: upload }, headers: authenticate(users(:three)).merge("Content-Type" => 'text/csv')
     assert_response :success
+
+    assert_equal 404, Order.count(:id)
+
+    correct = {
+      "delivery_date" => "9/23/2014",
+      "delivery_shift" => nil,
+      "origin_name" => "Larkin LLC",
+      "origin_address" => "1505 S BLOUNT ST",
+      "origin_city" => "RALEIGH",
+      "origin_state" => "NC",
+      "origin_zip" => "27603",
+      "origin_country" => "US",
+      "client_name" => "Stephania Dietrich",
+      "destination_address" => "728 BENT CREEK DRIVE",
+      "destination_city" => "HOPE MILLS",
+      "destination_state" => "NC",
+      "destination_zip" => "28348",
+      "destination_country" => "US",
+      "phone_number" => "1-250-615-3875 x1092",
+      "mode" => "TRUCKLOAD",
+      "purchase_order_number" => "500397590",
+      "volume" => "64.8",
+      "handling_unit_quantity" => "3",
+      "handling_unit_type" => "box",
+      "parsed_delivery_date" => Date.parse("2014-09-23"),
+      "load_truck_id" => nil,
+      "load_shift" => nil,
+      "load_date" => nil,
+      "load_ordinal" => nil,
+      "cancelled" => nil
+    }
+
+    order = Order.find_by(purchase_order_number: '500397590').attributes
+
+    correct["id"] = order["id"]
+    correct["updated_at"] = order["updated_at"]
+    correct["created_at"] = order["created_at"]
+
+    assert_equal correct, order
   end
 end

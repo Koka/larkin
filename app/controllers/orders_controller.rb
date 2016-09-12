@@ -142,7 +142,7 @@ class OrdersController < ApplicationController
   end
 
   def upload
-    raise "expected text/csv file" unless params[:file].content_type == "text/csv"
+    raise "expected text/csv file" unless params.require(:file).content_type == "text/csv"
 
     Order.transaction do
       CSV.foreach(params[:file].tempfile, { headers: true }) do |row|
