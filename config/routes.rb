@@ -15,9 +15,9 @@ Rails.application.routes.draw do
   post 'orders/:id/move_up', to: 'orders#move_up'
   post 'orders/:id/move_down', to: 'orders#move_down'
 
-  get 'trucks', to: 'trucks#index'
-  get 'trucks/:id', to: 'trucks#show'
-  get 'trucks/:id/shift_available/:shift/:date', to: 'trucks#shifts'
+  get 'trucks', to: 'trucks#index', as: 'trucks_list'
+  get 'trucks/:id', to: 'trucks#show', as: 'trucks_show'
+  get 'trucks/:id/shift_available/:shift/:date', to: 'trucks#shifts', as: 'trucks_shifts'
 
   get 'routelists', to: 'routelists#index'
   get 'routelists/:id', to: 'routelists#show', :defaults => { :format => 'json' }
