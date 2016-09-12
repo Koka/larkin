@@ -50,8 +50,6 @@ class RoutelistsController < ApplicationController
 
     @routelist = list[0]
 
-    puts @routelist
-
     respond_to do |format|
       format.json {
         @routelist[:links] = {

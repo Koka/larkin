@@ -14,3 +14,8 @@ three:
   name: user3
   login: user3
   password_digest: <%= BCrypt::Password.create('password3', cost: 5) %>
+
+four:
+  name: user4
+  login: user4
+  password_digest: <%= BCrypt::Password.create('password4', cost: 5) %>

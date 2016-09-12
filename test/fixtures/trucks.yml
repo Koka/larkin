@@ -11,3 +11,9 @@ two:
   max_weight: 10
   max_volume: 10
   driver: two
+
+load_truck:
+  name: Loaded truck
+  max_weight: 10
+  max_volume: 10
+  driver: four

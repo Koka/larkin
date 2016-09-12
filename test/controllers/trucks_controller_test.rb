@@ -11,7 +11,7 @@ class TrucksControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     list = JSON.parse(@response.body)["trucks"]
-    assert_equal 2, list.size
+    assert_equal 3, list.size
     assert_operator list[0]['id'], :<, list[1]['id']
   end
 
