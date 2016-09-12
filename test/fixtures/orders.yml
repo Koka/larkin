@@ -1,45 +1,70 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  delivery_date: MyString
-  delivery_shift: MyString
-  origin_name: MyString
-  origin_address: MyString
-  origin_city: MyString
-  origin_state: MyString
-  origin_zip: MyString
-  origin_country: MyString
-  client_name: MyString
-  destination_address: MyString
-  destination_city: MyString
-  destination_state: MyString
-  destination_zip: MyString
-  destination_country: MyString
-  phone_number: MyString
-  mode: MyString
-  purchase_order_number: MyString
-  volume: MyString
-  handling_unit_quantity: MyString
-  handling_unit_type: MyString
+  delivery_date: 09/01/206
+  delivery_shift:
+  origin_name: Larkin LLC
+  origin_address: Here
+  origin_city: City of Nowhere
+  origin_state: ST
+  origin_zip: 111222
+  origin_country: USSR
+  client_name: John Smith
+  destination_address: There
+  destination_city: New-York
+  destination_state: NY
+  destination_zip: 333444
+  destination_country: US
+  phone_number: 123456
+  mode: TRUCKLOAD
+  purchase_order_number: 1
+  volume: 10
+  handling_unit_quantity: 10
+  handling_unit_type: box
+  parsed_delivery_date: <%= Date.parse('2016-09-01') %>
 
 two:
-  delivery_date: MyString
-  delivery_shift: MyString
-  origin_name: MyString
-  origin_address: MyString
-  origin_city: MyString
-  origin_state: MyString
-  origin_zip: MyString
-  origin_country: MyString
-  client_name: MyString
-  destination_address: MyString
-  destination_city: MyString
-  destination_state: MyString
-  destination_zip: MyString
-  destination_country: MyString
-  phone_number: MyString
-  mode: MyString
-  purchase_order_number: MyString
-  volume: MyString
-  handling_unit_quantity: MyString
-  handling_unit_type: MyString
+  delivery_date: 09/02/2016
+  delivery_shift: E
+  origin_name: Larkin LLC
+  origin_address: Here
+  origin_city: City of Nowhere
+  origin_state: ST
+  origin_zip: 111222
+  origin_country: USSR
+  client_name: John Smith
+  destination_address: There
+  destination_city: New-York
+  destination_state: NY
+  destination_zip: 333444
+  destination_country: US
+  phone_number: 123456
+  mode: TRUCKLOAD
+  purchase_order_number: 2
+  volume: 10
+  handling_unit_quantity: 10
+  handling_unit_type: box
+  parsed_delivery_date: <%= Date.parse('2016-09-02') %>
+
+three:
+  delivery_date: 09/03/2016
+  delivery_shift: M
+  origin_name: Larkin LLC
+  origin_address: Here
+  origin_city: City of Nowhere
+  origin_state: ST
+  origin_zip: 111222
+  origin_country: USSR
+  client_name: John Smith
+  destination_address: There
+  destination_city: New-York
+  destination_state: NY
+  destination_zip: 333444
+  destination_country: US
+  phone_number: 123456
+  mode: TRUCKLOAD
+  purchase_order_number: 3
+  volume: 10
+  handling_unit_quantity: 10
+  handling_unit_type: box
+  parsed_delivery_date: <%= Date.parse('2016-09-03') %>
