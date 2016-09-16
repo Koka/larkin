@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   protected
     def bind_value(name, type, value)
+      #TODO: killlme pls
       ActiveRecord::Attribute.from_user(name, value, ActiveRecord::Type.registry.lookup(type))
     end
 
