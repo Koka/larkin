@@ -3,11 +3,12 @@ class ScheduleOrders
     new
   end
 
-  def call(truck, shift, date, order_ids)
+  def call(truck_id, shift, date, order_ids)
+    truck = Truck.find truck_id
+    orders = Order.order_as_specified(id: order_ids)
     Order.transaction do
-      order_ids.each do |id|
-        order = Order.find id
-        order.schedule! Truck.find(truck), date, shift
+      orders.each do |order|
+        order.schedule! truck, date, shift
       end
     end
   end

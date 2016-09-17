@@ -2,8 +2,6 @@ class RoutelistsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    puts "!!!!!!!!!!!!"
-    puts get_my_truck_id()
     list = ActiveRecord::Base.connection_pool.with_connection do |con|
       con.exec_query(
         'select load_date || \':\' || load_shift || \':\' || load_truck_id as id,'\

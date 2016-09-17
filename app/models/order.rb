@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  extend OrderAsSpecified
+
   belongs_to :load_truck, class_name: "Truck", optional: true
 
   before_save :parse_delivery_date
@@ -89,7 +91,7 @@ class Order < ApplicationRecord
           ",
           'Select next order load ordinal',
           [
-            bind_value('truck', :integer, truck),
+            bind_value('truck', :integer, truck.id),
             bind_value('shift', :string, shift),
             bind_value('date', :date, date)
           ]

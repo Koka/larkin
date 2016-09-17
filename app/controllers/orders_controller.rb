@@ -49,6 +49,4 @@ class OrdersController < ApplicationController
     UploadOrders.build.call params.require(:file)
   end
 
-  private
-
 end

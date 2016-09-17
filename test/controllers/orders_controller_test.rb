@@ -97,6 +97,12 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     }
     assert_response :success
 
+    post orders_move_up_url(orders(:one)), headers: authenticate(users(:three))
+    assert_response :success
+
+    post orders_move_down_url(orders(:three)), headers: authenticate(users(:three))
+    assert_response :success
+
     post orders_move_up_url(orders(:three)), headers: authenticate(users(:three))
     assert_response :success
 
@@ -107,13 +113,13 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_equal trucks(:one).id, o1.load_truck_id
     assert_equal 'M', o1.load_shift
     assert_equal Date.parse('2016-01-01'), o1.load_date
-    assert_equal 2, o1.load_ordinal
+    assert_equal 1, o1.load_ordinal
 
     o2 = Order.find orders(:two).id
     assert_equal trucks(:one).id, o2.load_truck_id
     assert_equal 'M', o2.load_shift
     assert_equal Date.parse('2016-01-01'), o2.load_date
-    assert_equal 1, o2.load_ordinal
+    assert_equal 2, o2.load_ordinal
 
     o3 = Order.find orders(:three).id
     assert_equal trucks(:one).id, o3.load_truck_id

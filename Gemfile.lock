@@ -113,6 +113,8 @@ GEM
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
+    order_as_specified (1.1)
+      activerecord (>= 4.0)
     pg (0.18.4)
     pkg-config (1.1.7)
     puma (3.6.0)
@@ -205,6 +207,7 @@ DEPENDENCIES
   knock
   listen (~> 3.0.5)
   minitest-reporters
+  order_as_specified
   pg (~> 0.18)
   puma (~> 3.0)
   rails (~> 5.0.0, >= 5.0.0.1)
@@ -219,4 +222,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.12.5
+   1.13.1

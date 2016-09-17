@@ -35,6 +35,7 @@ gem "ember-cli-rails"
 gem "bcrypt"
 gem "knock"
 gem "rails-latex"
+gem "order_as_specified"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
