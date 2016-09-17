@@ -18,7 +18,7 @@ export default Ember.Controller.extend({
       if (!Ember.isEmpty(files)) {
         this.get('session').authorize('authorizer:custom', (header, value) => {
           const uploader = EmberUploader.Uploader.create({
-            url: '/orders',
+            url: '/orders/upload',
             ajaxSettings: {
               headers: {
                 [header]: value
