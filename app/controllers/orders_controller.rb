@@ -2,20 +2,8 @@ class OrdersController < ApplicationController
   before_action :authenticate_user, :dispatcher_only
 
   def index
-    query = Order.reverse_chronologically
-
-    query = query.not_cancelled if (params[:cancelled] == 'false')
-    query = query.cancelled if (params[:cancelled] == 'true')
-
-    query = query.not_completed if (params[:completed] == 'false')
-    query = query.completed if (params[:completed] == 'true')
-
-    query = query.pending if (params[:pending] == 'true')
-    query = query.not_pending if (params[:pending] == 'false')
-
-    query = query.not_outdated if (params[:outdated] == 'false')
-    query = query.outdated if (params[:outdated] == 'true')
-
+    state = params.slice(:cancelled, :completed, :pending, :outdated)
+    query = Order.reverse_chronologically.for_state state
     render json: query
   end
 

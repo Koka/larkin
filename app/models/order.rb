@@ -5,6 +5,22 @@ class Order < ApplicationRecord
 
   before_save :parse_delivery_date
 
+  scope :for_state, -> (state) {
+    query = query.not_cancelled if (state[:cancelled] == 'false')
+    query = query.cancelled if (state[:cancelled] == 'true')
+
+    query = query.not_completed if (state[:completed] == 'false')
+    query = query.completed if (state[:completed] == 'true')
+
+    query = query.pending if (state[:pending] == 'true')
+    query = query.not_pending if (state[:pending] == 'false')
+
+    query = query.not_outdated if (state[:outdated] == 'false')
+    query = query.outdated if (state[:outdated] == 'true')
+
+    query
+  }
+
   scope :routelists, -> {
     query = select("min(id) as id, to_char(load_date, 'MM/DD/YYYY') as delivery_date,"\
     'load_shift as delivery_shift,'\
