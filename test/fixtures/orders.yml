@@ -71,4 +71,4 @@ three:
   load_date: <%= Date.parse('2999-09-03') %>
   load_shift: M
   load_ordinal: 1
-  load_truck: load_truck
+  load_truck_id: 3

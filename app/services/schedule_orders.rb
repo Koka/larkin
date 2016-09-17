@@ -7,11 +7,7 @@ class ScheduleOrders
     Order.transaction do
       order_ids.each do |id|
         order = Order.find id
-        order.update_attributes!({
-          load_truck: Truck.find(truck),
-          load_date: date,
-          load_shift: shift
-        })
+        order.schedule! Truck.find(truck), date, shift
       end
     end
   end

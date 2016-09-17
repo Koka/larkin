@@ -2,7 +2,6 @@ class Order < ApplicationRecord
   belongs_to :load_truck, class_name: "Truck", optional: true
 
   before_save :parse_delivery_date
-  before_save :assign_load_ordinal
 
   scope :reverse_chronologically, -> { order(
     "coalesce(load_date, parsed_delivery_date) DESC",
@@ -10,7 +9,7 @@ class Order < ApplicationRecord
     :client_name
   ) }
 
-  scope :not_cancelled, -> { where(cancelled: false).or(query.where(cancelled: nil)) }
+  scope :not_cancelled, -> { where(cancelled: false).or(where(cancelled: nil)) }
 
   scope :cancelled, -> { where(cancelled: true) }
 
@@ -81,34 +80,36 @@ class Order < ApplicationRecord
     end
   end
 
+  def schedule!(truck, date, shift)
+    result = ActiveRecord::Base.connection_pool.with_connection do |con|
+      con.exec_query("
+           select max(coalesce(load_ordinal, 0)) + 1 as new_ordinal
+            from orders
+            where (load_truck_id, load_shift, load_date) = ($1, $2, $3)
+          ",
+          'Select next order load ordinal',
+          [
+            bind_value('truck', :integer, truck),
+            bind_value('shift', :string, shift),
+            bind_value('date', :date, date)
+          ]
+      )
+    end
+
+    load_ordinal = result[0] && result[0]["new_ordinal"] ? result[0]["new_ordinal"] : 0
+    self.update_attributes!({
+      load_truck: truck,
+      load_date: date,
+      load_shift: shift,
+      load_ordinal: load_ordinal
+    })
+  end
+
   private
     def parse_delivery_date
       if self.delivery_date && /(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-][12][0-9]{3}/.match(self.delivery_date) then
         self.parsed_delivery_date = Date.strptime(self.delivery_date, '%m/%d/%Y')
       end
-    end
-
-    def assign_load_ordinal
-      return if self.load_truck.nil? || self.load_shift.nil? || self.load_date.nil?
-
-      puts "!!!!!!!!!!!!!!ASSIGN ORDINAL!!!"
-
-      result = ActiveRecord::Base.connection_pool.with_connection do |con|
-        con.exec_query("
-             select max(coalesce(load_ordinal, 0)) + 1 as new_ordinal
-              from orders
-              where (load_truck_id, load_shift, load_date) = ($1, $2, $3)
-            ",
-            'Select next order load ordinal',
-            [
-              bind_value('truck', :integer, self.load_truck),
-              bind_value('shift', :string, self.load_shift),
-              bind_value('date', :date, self.load_date)
-            ]
-        )
-      end
-
-      self.load_ordinal = result[0] && result[0]["new_ordinal"] ? result[0]["new_ordinal"] : 0
     end
 
     def swap_load_ordinals(target)
