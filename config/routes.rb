@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   get '/', to: redirect('/app')
   post 'knock/auth_token', to: 'user_token#create'
   mount_ember_app :frontend, to: "/app"
@@ -28,7 +29,9 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'routelists', to: 'routelists#index', as: 'routelists_list'
-  get 'routelists/:id', to: 'routelists#show', :defaults => { :format => 'json' }, as: 'routelists_show'
-  get 'routelists/:id/stops', to: 'routelists#stops', as: 'routelists_stops'
+  resources :routelists, only: [:index, :show], defaults: { format: 'json' } do
+    member do
+      get 'stops'
+    end
+  end
 end
