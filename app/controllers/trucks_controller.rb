@@ -1,69 +1,21 @@
 class TrucksController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :dispatcher_or_this_truck_driver
+  skip_before_action :dispatcher_or_this_truck_driver, only: [:index]
 
   def index
-    my_id = get_my_truck_id()
-    render json: my_id ? Truck.order(:id).where(id: my_id) : Truck.order(:id).all
+    render json: Truck.visible_to(current_user)
   end
 
   def show
-    my_id = get_my_truck_id()
-    raise 'Invalid truck id' unless my_id == nil || params[:id].to_i == my_id
-
-    render json: Truck.find_by(id: params[:id])
+    render json: Truck.find(params[:id])
   end
 
   def shifts
-    my_id = get_my_truck_id()
-    raise 'Invalid truck id' unless my_id == nil || params[:id].to_i == my_id
-    
-    result = ActiveRecord::Base.connection_pool.with_connection do |con|
-      con.exec_query("
-          select shift_count FROM (
-            select
-            id,
-            case row_number() over () % 2 = EXTRACT(DOY FROM $2::date)::bigint % 2
-            when true then ($3 / 2)
-            else $3 - ($3 / 2)
-            end as shift_count
-            from trucks
-            order by id
-          ) S where S.id = $1
-        ",
-        'Get truck shift count for date',
-        [
-          bind_value('truck', :integer, params[:id]),
-          bind_value('date', :date, params[:date]),
-          bind_value('total_shifts', :integer, 3)
-        ]
-      )
-    end
-
-    shift_count = result[0] ? result[0]["shift_count"] : 0
-
-    render json: shift_available?(shift_count, params[:shift])
+    render json: Truck.find(params[:id]).shift_available?(params[:date], params[:shift])
   end
 
   private
-    def shift_available?(shift_count, shift)
-      all_shifts = ['M', 'N', 'E']
-      trips_left = shift_count
-      need_rest = false
-      start_shift = all_shifts.length - 1 - trips_left
-      for i in start_shift..(all_shifts.length - 1) do
-        if need_rest then
-          need_rest = false
-          next
-        end
-
-        if trips_left > 0 then
-          trips_left -= 1
-          need_rest = true
-          if all_shifts[i] == shift then
-            return true
-          end
-        end
-      end
-      return false
+    def dispatcher_or_this_truck_driver
+      raise 'Invalid truck id' unless current_user.truck.nil? || params[:id].to_i == current_user.truck.id
     end
 end

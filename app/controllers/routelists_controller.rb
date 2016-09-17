@@ -1,5 +1,6 @@
 class RoutelistsController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, :dispatcher_or_this_truck_driver
+  skip_before_action :dispatcher_or_this_truck_driver, only: [:index]
 
   def index
     list = ActiveRecord::Base.connection_pool.with_connection do |con|
@@ -15,7 +16,7 @@ class RoutelistsController < ApplicationController
         "order by load_date ASC, (case load_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end) ASC, load_truck_id",
         'Load route lists',
         [
-          bind_value('truck', :integer, get_my_truck_id())
+          bind_value('truck', :integer, current_user.truck.nil? ? nil : current_user.truck.id)
         ]
       )
     end
@@ -24,9 +25,6 @@ class RoutelistsController < ApplicationController
 
   def show
     id = parse_id
-    my_id = get_my_truck_id()
-
-    raise 'Invalid truck id' unless my_id == nil || id[:truck].to_i == my_id
 
     list = ActiveRecord::Base.connection_pool.with_connection do |con|
       con.exec_query(
@@ -58,7 +56,7 @@ class RoutelistsController < ApplicationController
         render :json => {routelist: @routelist}
       }
       format.pdf {
-        @routelist[:stops] = get_stops(id)
+        @routelist[:stops] = Order.scheduled_to id[:truck], id[:shift], id[:date]
         @routelist[:truck] = Truck.find(id[:truck])
         begin
           render :pdf => @routelist
@@ -79,15 +77,13 @@ class RoutelistsController < ApplicationController
 
   def stops
     id = parse_id
-
-    list = get_stops(id)
-
+    list = Order.scheduled_to id[:truck], id[:shift], id[:date]
     render json: { orders: list}
   end
 
   private
-    def get_stops(id)
-      Order.order(:load_ordinal).where(load_truck_id: id[:truck], load_shift: id[:shift], load_date: id[:date])
+    def dispatcher_or_this_truck_driver
+      raise 'Invalid truck id' unless current_user.truck.nil? || parse_id[:truck].to_i == current_user.truck.id
     end
 
     def parse_id
@@ -97,5 +93,10 @@ class RoutelistsController < ApplicationController
         shift: id[1],
         date: id[0]
       }
+    end
+
+    def bind_value(name, type, value)
+      #TODO: kill me pls
+      ActiveRecord::Attribute.from_user(name, value, ActiveRecord::Type.registry.lookup(type))
     end
 end

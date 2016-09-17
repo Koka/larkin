@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
   end
 
   def show
-    render json: Order.find_by(id: params[:id])
+    render json: Order.find(params[:id])
   end
 
   def schedule

@@ -11,6 +11,10 @@ class Order < ApplicationRecord
     :client_name
   ) }
 
+  scope :scheduled_to, -> (truck, shift, date) {
+    order(:load_ordinal).where(load_truck_id: truck, load_shift: shift, load_date: date)
+  }
+
   scope :not_cancelled, -> { where(cancelled: false).or(where(cancelled: nil)) }
 
   scope :cancelled, -> { where(cancelled: true) }

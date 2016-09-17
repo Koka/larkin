@@ -2,6 +2,8 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  has_one :truck, foreign_key: 'driver_id', inverse_of: :driver
+
   validates :name, presence: true
   validates :login, presence: true, uniqueness: true
 
@@ -15,6 +17,6 @@ class User < ApplicationRecord
   end
 
   def role
-    Truck.find_by(driver_id: self.id) ? :driver : :dispatcher
+    self.truck.nil? ? :dispatcher : :driver
   end
 end
