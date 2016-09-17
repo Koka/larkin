@@ -6,8 +6,8 @@ class Order < ApplicationRecord
   before_save :parse_delivery_date
 
   scope :for_state, -> (state) {
-    query = query.not_cancelled if (state[:cancelled] == 'false')
-    query = query.cancelled if (state[:cancelled] == 'true')
+    query = not_cancelled if (state[:cancelled] == 'false')
+    query = cancelled if (state[:cancelled] == 'true')
 
     query = query.not_completed if (state[:completed] == 'false')
     query = query.completed if (state[:completed] == 'true')
