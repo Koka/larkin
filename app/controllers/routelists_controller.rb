@@ -15,8 +15,7 @@ class RoutelistsController < ApplicationController
         render :json => {
           routelist: @routelist.attributes.merge({
             links: {
-              stops: 'stops',
-              truck: "/trucks/#{@routelist.load_truck.id}"
+              stops: 'stops'
             }
           })
         }
