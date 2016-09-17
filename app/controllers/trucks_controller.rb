@@ -10,7 +10,7 @@ class TrucksController < ApplicationController
     render json: Truck.find(params[:id])
   end
 
-  def shifts
+  def shift_available
     render json: Truck.find(params[:id]).shift_available?(params[:date], params[:shift])
   end
 

@@ -2,18 +2,18 @@ require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   test "should not get unauthorized user" do
-    get users_show_url(users(:two).id)
+    get user_url(users(:two).id)
     assert_response 401
   end
 
   test "should not get for driver" do
     assert_raises(Exception) {
-      get users_show_url(users(:one).id), headers: authenticate(users(:one))
+      get user_url(users(:one).id), headers: authenticate(users(:one))
     }
   end
 
   test "should get for dispatcher" do
-    get users_show_url(users(:one).id), headers: authenticate(users(:three))
+    get user_url(users(:one).id), headers: authenticate(users(:three))
     assert_response :success
 
     user = JSON.parse(@response.body)["user"]

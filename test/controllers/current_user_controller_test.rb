@@ -3,12 +3,12 @@ require 'helpers/auth'
 
 class CurrentUserControllerTest < ActionDispatch::IntegrationTest
   test "should not get unauthorized user" do
-    get users_me_url
+    get me_users_url
     assert_response 401
   end
 
   test "should get authorized user" do
-    get users_me_url, headers: authenticate(users(:one))
+    get me_users_url, headers: authenticate(users(:one))
     assert_response :success
 
     user = JSON.parse(@response.body)["user"]
@@ -19,7 +19,7 @@ class CurrentUserControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should have dispatcher role if not driving anything" do
-    get users_me_url, headers: authenticate(users(:three))
+    get me_users_url, headers: authenticate(users(:three))
     assert_response :success
 
     user = JSON.parse(@response.body)["user"]
