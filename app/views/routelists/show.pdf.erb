@@ -1,9 +1,9 @@
-\section*{Route list for <%= lesc @routelist['delivery_date'] %> (shift: <%= lesc @routelist['delivery_shift']%>, truck: <%= lesc @routelist[:truck].name%>)}
+\section*{Route list for <%= lesc @routelist.delivery_date %> (shift: <%= lesc @routelist.delivery_shift%>, truck: <%= lesc @routelist.load_truck.name%>)}
 
 \begin{enumerate}
 
   \item Larkin LLC (loading for delivery)
-  <% @routelist[:stops].each do |order| %>
+  <% @routelist.routelist_stops.each do |order| %>
     \item Order <%= lesc order.purchase_order_number%>;
     <% unless order.origin_name == 'Larkin LLC' then %>
       <%= lesc order.origin_country%>, <%= lesc order.origin_zip%> <%= lesc order.origin_city%> <%= lesc order.origin_state%>, <%= lesc order.origin_address%>,

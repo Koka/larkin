@@ -3,61 +3,25 @@ class RoutelistsController < ApplicationController
   skip_before_action :dispatcher_or_this_truck_driver, only: [:index]
 
   def index
-    list = ActiveRecord::Base.connection_pool.with_connection do |con|
-      con.exec_query(
-        'select load_date || \':\' || load_shift || \':\' || load_truck_id as id,'\
-        "to_char(load_date, 'MM/DD/YYYY') as delivery_date,"\
-        'load_shift as delivery_shift,'\
-        'count(distinct id) + 2 as stop_count,'\
-        'load_truck_id as truck_id '\
-        'from orders '\
-        'where load_date >= current_date AND load_truck_id is not null AND load_truck_id = coalesce($1, load_truck_id) '\
-        'group by load_date, load_shift, load_truck_id '\
-        "order by load_date ASC, (case load_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end) ASC, load_truck_id",
-        'Load route lists',
-        [
-          bind_value('truck', :integer, current_user.truck.nil? ? nil : current_user.truck.id)
-        ]
-      )
-    end
-    render json: {routelists: list}
+    query = Order.routelists.scheduled_for_user current_user
+    render json: {routelists: query}
   end
 
   def show
-    id = parse_id
-
-    list = ActiveRecord::Base.connection_pool.with_connection do |con|
-      con.exec_query(
-        'select load_date || \':\' || load_shift || \':\' || load_truck_id as id,'\
-        "to_char(load_date, 'MM/DD/YYYY') as delivery_date,"\
-        'load_shift as delivery_shift,'\
-        'count(distinct id) + 2 as stop_count,'\
-        'load_truck_id as truck_id '\
-        'from orders '\
-        'where load_date >= current_date AND load_truck_id = $1 AND load_shift = $2 AND load_date = $3 '\
-        'group by load_date, load_shift, load_truck_id '\
-        "order by load_date ASC, (case load_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end) ASC, load_truck_id",
-        'Load route list',
-        [
-          bind_value('truck', :integer, id[:truck]),
-          bind_value('shift', :string, id[:shift]),
-          bind_value('date', :date, id[:date])
-        ]
-      )
-    end
-
-    @routelist = list[0]
+    @routelist = Order.routelists.scheduled_with_order(Order.find(params[:id])).first
 
     respond_to do |format|
       format.json {
-        @routelist[:links] = {
-          stops: 'stops'
+        render :json => {
+          routelist: @routelist.attributes.merge({
+            links: {
+              stops: 'stops'
+            }
+          })
         }
-        render :json => {routelist: @routelist}
       }
+
       format.pdf {
-        @routelist[:stops] = Order.scheduled_to id[:truck], id[:shift], id[:date]
-        @routelist[:truck] = Truck.find(id[:truck])
         begin
           render :pdf => @routelist
         rescue Exception => e
@@ -76,27 +40,13 @@ class RoutelistsController < ApplicationController
   end
 
   def stops
-    id = parse_id
-    list = Order.scheduled_to id[:truck], id[:shift], id[:date]
+    list = Order.find(params[:id]).routelist_stops
     render json: { orders: list}
   end
 
   private
     def dispatcher_or_this_truck_driver
-      raise 'Invalid truck id' unless current_user.truck.nil? || parse_id[:truck].to_i == current_user.truck.id
-    end
-
-    def parse_id
-      id = params[:id].split(':')
-      {
-        truck: id[2],
-        shift: id[1],
-        date: id[0]
-      }
-    end
-
-    def bind_value(name, type, value)
-      #TODO: kill me pls
-      ActiveRecord::Attribute.from_user(name, value, ActiveRecord::Type.registry.lookup(type))
+      truck = Order.find(params[:id]).load_truck
+      raise 'Invalid truck id' unless current_user.truck.nil? || truck.id == current_user.truck.id
     end
 end

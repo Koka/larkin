@@ -5,6 +5,26 @@ class Order < ApplicationRecord
 
   before_save :parse_delivery_date
 
+  scope :routelists, -> {
+    query = select("min(id) as id, to_char(load_date, 'MM/DD/YYYY') as delivery_date,"\
+    'load_shift as delivery_shift,'\
+    'count(distinct id) + 2 as stop_count,'\
+    'load_truck_id, load_shift, load_date')
+    query = query.where('load_date >= current_date AND load_truck_id is not null')
+    query = query.group('load_date, load_shift, load_truck_id')
+    query = query.order("load_date ASC, (case load_shift when 'M' then 0 when 'N' then 1 when 'E' then 2 end) ASC, load_truck_id")
+    query
+  }
+
+  scope :scheduled_for_user, -> (user) {
+    truck = user.truck.nil? ? nil : user.truck.id
+    where(['load_truck_id = coalesce(?, load_truck_id)', truck])
+  }
+
+  scope :scheduled_with_order, -> (order) {
+    scheduled_to order.load_truck.id, order.load_shift, order.load_date
+  }
+
   scope :reverse_chronologically, -> { order(
     "coalesce(load_date, parsed_delivery_date) DESC",
     "(case coalesce(load_shift, delivery_shift) when 'M' then 0 when 'N' then 1 when 'E' then 2 else -1 end) DESC",
@@ -12,7 +32,7 @@ class Order < ApplicationRecord
   ) }
 
   scope :scheduled_to, -> (truck, shift, date) {
-    order(:load_ordinal).where(load_truck_id: truck, load_shift: shift, load_date: date)
+    where(load_truck_id: truck, load_shift: shift, load_date: date)
   }
 
   scope :not_cancelled, -> { where(cancelled: false).or(where(cancelled: nil)) }
@@ -109,6 +129,11 @@ class Order < ApplicationRecord
       load_shift: shift,
       load_ordinal: load_ordinal
     })
+  end
+
+  def routelist_stops
+    return [] if self.load_truck.nil?
+    Order.order(:load_ordinal).scheduled_to self.load_truck.id, self.load_shift, self.load_date
   end
 
   private
